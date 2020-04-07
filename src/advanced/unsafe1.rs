@@ -7,6 +7,11 @@ pub fn p_test1(){
     unsafe{
         println!("{:p} {:p}",r1,r2); //0x3450affbe4 0x3450affbe4
     }
+    let mut a = Box::new(5);
+    let raw:*mut _ = &mut *a; //这种写法不用as
+    unsafe{
+        println!("{:p}",raw); //0x24e48436aa0
+    }
 }
 
 //unsafe的函数和方法
