@@ -2,7 +2,7 @@ use std::thread;
 use std::sync::mpsc;
 use std::time::Duration;
 
-//channel使用
+//异步channel使用
 pub fn chan_test1(){
     let (tx,rx)=mpsc::channel();
     thread::spawn(move||{
@@ -13,7 +13,16 @@ pub fn chan_test1(){
     println!("Got: {}",received); //Got: hi
 }
 
-//多p模式
+//异步channel多p模式
+//每次输出都不同
+// Got: hi
+// Got: more
+// Got: messages
+// Got: from
+// Got: the
+// Got: for
+// Got: you
+// Got: thread
 pub fn chan_test2() {
     let (tx,rx)=mpsc::channel();
     let tx1=mpsc::Sender::clone(&tx);
@@ -36,4 +45,23 @@ pub fn chan_test2() {
     for received in rx{
         println!("Got: {}",received);
     }
+}
+
+//异步chan，删除tx和rx其一另一边都会报错
+pub fn chan_test3(){
+    let (tx, rx) = mpsc::channel::<i32>();
+    // drop(tx);
+    // assert!(rx.recv().is_err());
+    drop(rx);
+    assert!(tx.send(1).is_err());
+}
+
+//同步chan
+pub fn chan_test4(){
+    let (tx, rx) = mpsc::sync_channel::<i32>(0);
+    thread::spawn(move|| {
+        //这里会等待主线程开始接受
+        tx.send(53).unwrap();
+    });
+    println!("Got: {}",rx.recv().unwrap());
 }

@@ -1,5 +1,7 @@
 use std::rc::{Rc,Weak};
 use std::cell::{RefCell,Ref,RefMut};
+use std::sync::Arc;
+use std::thread;
 
 //Rc使用
 pub fn rc_test1(){
@@ -80,4 +82,21 @@ pub fn rc_test4(){
         *y2 = 42;
     }
     println!("{:?}",*x.borrow()); //(42, 'b')
+}
+
+//Arc使用
+// 5
+// 5
+// 5
+// 5
+// 报错退出
+pub fn rc_test5(){
+    let five = Arc::new(5);
+    println!("{}",five);
+    for _ in 0..10 {
+        let five = Arc::clone(&five);
+        thread::spawn(move || {
+            println!("{:?}", five);
+        });
+    }
 }

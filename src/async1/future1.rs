@@ -109,6 +109,7 @@ impl Executor{
             //这里take的是Some表示这个future没有完成，比如在代码最下方被赋值了
             if let Some(mut future)=future_slot.take(){
                 //这里的waker是Arc<impl ArcWake>的一个引用，也就是Arc<Task>的一个引用
+                //创建的Waker中的RawWaker中的data即是该&task，vtable则是上面的impl ArcWake for Task
                 let waker = waker_ref(&task);
                 //创建一个Context实例的可变引用
                 let context = &mut Context::from_waker(&*waker);
