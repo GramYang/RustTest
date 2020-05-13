@@ -2,19 +2,6 @@ use std::thread;
 use std::time::Duration;
 
 //线程使用，join
-// 1 from main thread!
-// 1 from the spawned thread!
-// 2 from the spawned thread!
-// 2 from main thread!
-// 3 from the spawned thread!
-// 3 from main thread!
-// 4 from main thread!
-// 4 from the spawned thread!
-// 5 from the spawned thread!
-// 6 from the spawned thread!
-// 7 from the spawned thread!
-// 8 from the spawned thread!
-// 9 from the spawned thread!
 pub fn t_test1(){
     let handle =thread::spawn(||{
        for i in 1..10{
@@ -36,4 +23,15 @@ pub fn t_test2() {
         println!("vector: {:?}",v); //vector: [1, 2, 3]
     });
     handle.join().unwrap();
+}
+
+//thread::Builder是线程工厂，用来设置新线程的属性：名称和栈尺寸。
+pub fn t_test3(){
+    let builder = thread::Builder::new()
+        .name("foo".into())
+        .stack_size(32 * 1024);
+    let handler = builder.spawn(|| {
+        // thread code
+    }).unwrap();
+    handler.join().unwrap();
 }

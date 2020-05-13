@@ -72,3 +72,16 @@ pub fn flow_test1() {
     }
     println!("{:?}",names1);
 }
+
+//测试0..n和0..=n的区别，这说明0..n不包括n，而0..=n包括n
+// 0 1 2 3 4
+// 0 1 2 3 4 5
+pub fn flow_test2(){
+    for n in 0..5{
+        print!("{} ",n);
+    }
+    println!();
+    for n in 0..=5{
+        print!("{} ",n);
+    }
+}

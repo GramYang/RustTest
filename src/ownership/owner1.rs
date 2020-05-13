@@ -77,7 +77,7 @@ pub fn owner_test4() {
 
 //slice
 pub fn owner_test5() {
-    let mut s1=String::from("hello world");
+    let s1=String::from("hello world");
     let slice=&s1[..2];
     let s2 = "Hello, world";
     //下面三种写法都可以

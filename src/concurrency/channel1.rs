@@ -14,15 +14,6 @@ pub fn chan_test1(){
 }
 
 //异步channel多p模式
-//每次输出都不同
-// Got: hi
-// Got: more
-// Got: messages
-// Got: from
-// Got: the
-// Got: for
-// Got: you
-// Got: thread
 pub fn chan_test2() {
     let (tx,rx)=mpsc::channel();
     let tx1=mpsc::Sender::clone(&tx);

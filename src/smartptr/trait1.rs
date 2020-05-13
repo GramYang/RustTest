@@ -63,7 +63,7 @@ impl Drop for CustomSmartPointer{
     }
 }
 
-//std::mem::drop函数手动drop
+//std::mem::drop函数手动drop，好像drop不能对基本类型使用
 pub fn t_test4(){
     let c=CustomSmartPointer{data:String::from("some data")};
     println!("created");
