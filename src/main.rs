@@ -25,6 +25,8 @@ fn main() {
     // variable::cast1::c_test1();
     // function::fn1::fn_test1();
     // function::fn1::fn_test2();
+    // function::fn1::fn_test3();
+    // function::fn1::fn_test4();
     // control_flow::flow1::flow_test1();
     // control_flow::flow1::flow_test2();
     // ownership::owner1::owner_test1();
@@ -35,15 +37,13 @@ fn main() {
     // ownership::owner2::box_test();
     // ownership::owner2::vec_test();
     // ownership::owner2::refcell_test();
-    // struct_enum::struct1::struct_test1();
-    // struct_enum::struct1::struct_test2();
-    // struct_enum::enum1::enum_test1();
-    // struct_enum::enum1::enum_test2();
-    // struct_enum::enum1::enum_test3();
+    // struct_enum::enum1::o_test1();
+    // struct_enum::enum1::r_test1();
+    // struct_enum::struct1::s_test1();
     // collection::vec1::vec_test1();
     // collection::vec1::vec_test2();
-    // collection::vec1::vec_test3();
     // collection::str1::str_test1();
+    // collection::str1::str_test2();
     // pattern::expr1::e_test1();
     // pattern::pat1::p_test1();
     // pattern::pat1::p_test2();
@@ -59,6 +59,7 @@ fn main() {
     // g_t_l::generic::g_test2();
     // g_t_l::trait1::t_test1();
     // g_t_l::trait1::t_test2();
+    // g_t_l::trait1::t_test3();
     // g_t_l::lifetime::l_test1();
     // g_t_l::lifetime::f_test2();
     // iter_closure::closure::close_test1();
@@ -76,8 +77,10 @@ fn main() {
     // smartptr::rc1::rc_test1();
     // smartptr::rc1::rc_test1_1();
     // smartptr::rc1::rc_test2();
-    // smartptr::rc1::rc_test2_1()
+    // smartptr::rc1::rc_test2_1();
     // smartptr::rc1::rc_test3();
+    // smartptr::rc1::rc_test3_1();
+    // smartptr::rc1::rc_test3_2();
     // smartptr::rc1::rc_test4();
     // smartptr::rc1::rc_test5();
     // concurrency::thread1::t_test1();
@@ -126,7 +129,13 @@ fn main() {
     // serde::serde1::test1();
     // thread_pool::tp1::test1();
     // thread_pool::tp1::test2();
-    // std1::any1::test1();
-    // std1::map::hashmap1();
+    // std1::map1::hashmap1();
+    // std1::reflect1::r_t1();
+    // std1::io1::i_t1();
+    // std1::io1::i_t2();
+    // std1::io1::i_t3();
+    // std1::io1::i_t4();
+    // std1::io1::i_t5();
+    // std1::io1::i_t6();
     // compution::compute::test1();
 }

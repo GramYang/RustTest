@@ -95,3 +95,30 @@ impl BasicTrait for &str{
         println!("内置基本类型也可以实现trait!")
     }
 }
+
+//结构体内嵌trait，只能用泛型约束
+pub fn t_test3(){
+    let b = Big{a:Some(1),b:Some(String::from("123")),c:Small{d:Some(2),e:Some(true)}};
+    b.c.n();
+}
+
+trait Nested{
+    fn n(&self);
+}
+
+struct Big<T:Nested> {
+    a:Option<i32>,
+    b:Option<String>,
+    c:T,
+}
+
+struct Small{
+    d:Option<i32>,
+    e:Option<bool>,
+}
+
+impl Nested for Small{
+    fn n(&self) {
+        println!("this is Small, {:?} {:?}",self.d,self.e);//this is Small, Some(2) Some(true)
+    }
+}
