@@ -83,6 +83,7 @@ pub fn str_test2(){
     assert_eq!(s, "foobar");
     //is_empty判断String是否为空
     let mut v = String::new();
+    println!("{} {}",v.capacity(),v.len());//0 0
     assert!(v.is_empty());
     v.push('a');
     assert!(!v.is_empty());

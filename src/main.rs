@@ -18,10 +18,12 @@ mod serde;
 mod thread_pool;
 mod std1;
 mod compution;
+mod crate1;
 
 fn main() {
     // variable::let1::let_test1();
     // variable::let1::let_test2();
+    // variable::let1::let_test3();
     // variable::cast1::c_test1();
     // function::fn1::fn_test1();
     // function::fn1::fn_test2();
@@ -45,15 +47,8 @@ fn main() {
     // collection::str1::str_test1();
     // collection::str1::str_test2();
     // pattern::expr1::e_test1();
+    // pattern::expr1::e_test2();
     // pattern::pat1::p_test1();
-    // pattern::pat1::p_test2();
-    // pattern::pat1::p_test3();
-    // pattern::pat1::p_test4();
-    // pattern::pat1::p_test5();
-    // pattern::pat1::p_test6();
-    // pattern::pat1::p_test7();
-    // pattern::pat1::p_test8();
-    // pattern::pat1::p_test9();
     // pattern::pat1::p_test10();
     // g_t_l::generic::g_test1();
     // g_t_l::generic::g_test2();
@@ -137,5 +132,9 @@ fn main() {
     // std1::io1::i_t4();
     // std1::io1::i_t5();
     // std1::io1::i_t6();
+    // std1::time1::t_t1();
+    // std1::fmt::f_t1();
+    // std1::fmt::f_t2();
     // compution::compute::test1();
+    // crate1::chrono1::c_t1();
 }

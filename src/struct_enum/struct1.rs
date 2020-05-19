@@ -4,12 +4,18 @@ pub fn s_test1(){
     //Builder模式
     let b = Builder::new(100,String::from("nmsl"));
     println!("{:?}",b.op1(1).op2(String::from("1")));//Builder { a: 101, b: "nmsl1" }
+    //所有权测试
+    let mut b = Builder::new(123, "321".to_string());
+    b.op4();
+    println!("{:?}",b);//不变
+    let b = Builder::new(1234, "4321".to_string());
+    b.op5();
     //Builder模式+Option
     let b = Builder1::new(200,String::from("nmsl"));
     println!("{:?}",b.op1(1).op2(String::from("1")));//Builder1 { a: Some(201), b: Some("nmsl1") }
     //go指针方法
     let mut b = Builder1::new(300,String::from("omfg"));
-    b.op3(2,String::from("1"));
+    &b.op3(2,String::from("1"));//调用方法，b和&b都一样
     println!("{:?}",b);//Builder1 { a: Some(302), b: Some("omfg1") }
     //引用参数
     let mut b = Builder::new(350, String::from("田所浩二"));
@@ -31,15 +37,18 @@ pub fn s_test1(){
     fn p2(x:i32)->i32{
         x*4
     }
-    let p11:Ptr = p1;
-    let p22:Ptr = p2;
+    fn p3(x:i32)->i32{
+        x*5
+    }
     let mut b = Builder2::new(p);
-    let mut v1 = vec![];
-    v1.push(p11);
-    v1.push(p22);
+    let mut v1:Vec<Ptr> = vec![];
+    v1.push(p1);
+    v1.push(p2);
     b.op1(&v1);
+    b.b = Some(p3);
     println!("{}",b.op2(2)(3));//12
-    println!("{:?}", b);//Builder2 { a: Some([0x406b00, 0x406b40, 0x406b80]) }
+    println!("{}",b.b.unwrap()(3));//15
+    println!("{:?}",b);//Builder2 { a: Some([0x406b00, 0x406b40, 0x406b80]) }
 }
 
 #[derive(Debug)]
@@ -67,6 +76,22 @@ impl Builder{
     fn op3(&mut self, x:&i32, y:&String){
         self.a+=*x;
         self.b += y;
+    }
+
+    //所有权测试1
+    fn op4(&mut self){
+        let a1 = self.a;//基本类型可以move
+        // let b1 = self.b;//这里报错，can't move
+        let b1 = self.b.clone();//非基本类型可以这么写
+        println!("{} {}",a1,b1);//123 321
+    }
+
+    //所有权测试2
+    fn op5(mut self) {
+        let a1 = self.a;
+        let b1 = self.b;
+        println!("{} {}",a1,b1);//1234 4321
+        // println!("{:?}",self);//报错，self被借用了
     }
 }
 
@@ -107,6 +132,7 @@ impl Builder1{
 #[derive(Debug)]
 struct Builder2{
     a:Option<Vec<Ptr>>,
+    b:Option<Ptr>,
 }
 
 type Ptr = fn(x:i32) ->i32;
@@ -116,7 +142,8 @@ impl Builder2{
         let mut v:Vec<Ptr> = Vec::new();
         v.push(x);
         Builder2{
-            a:Some(v)
+            a:Some(v),
+            b:None,
         }
     }
 
