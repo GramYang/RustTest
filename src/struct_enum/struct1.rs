@@ -34,7 +34,7 @@ pub fn s_test1(){
     fn p1(x:i32)->i32{
         x*3
     }
-    fn p2(x:i32)->i32{
+    fn p2(mut x:i32)->i32{//添加mut后p2仍然属于Ptr，但是加&mut就不行了
         x*4
     }
     fn p3(x:i32)->i32{

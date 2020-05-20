@@ -112,3 +112,25 @@ pub fn str_test2(){
     s.replace_range(beta_offset.., "Α is capital alpha; ");
     println!("{}",s);//α is alpha, Α is capital alpha;
 }
+
+//测试String和&str的隐式转换？不能隐式转换，常量&str也不行
+//唯一的转换：&String可以是&str
+pub fn str_test3(){
+    let w = Wrapper{s:String::from("123")};
+    // w.op1();//报错
+}
+
+struct Wrapper{
+    s:String
+}
+
+const AA:&'static str = "123";
+
+impl Wrapper{
+    // fn op1(&self){
+    //     match self.s {
+    //         AA => println!("bingo"),//报错
+    //         _ => println!("not bingo"),
+    //     }
+    // }
+}

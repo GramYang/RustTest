@@ -14,7 +14,6 @@ mod async1;
 mod macro1;
 mod quote;
 mod list;
-mod serde;
 mod thread_pool;
 mod std1;
 mod compution;
@@ -46,6 +45,8 @@ fn main() {
     // collection::vec1::vec_test2();
     // collection::str1::str_test1();
     // collection::str1::str_test2();
+    // collection::str1::str_test3();
+    collection::box1::b_t1();
     // pattern::expr1::e_test1();
     // pattern::expr1::e_test2();
     // pattern::pat1::p_test1();
@@ -121,11 +122,11 @@ fn main() {
     // list::fifth::test2();
     // list::fifth::test3();
     // list::fifth::test4();
-    // serde::serde1::test1();
     // thread_pool::tp1::test1();
     // thread_pool::tp1::test2();
     // std1::map1::hashmap1();
     // std1::reflect1::r_t1();
+    // std1::reflect1::r_t2();
     // std1::io1::i_t1();
     // std1::io1::i_t2();
     // std1::io1::i_t3();
@@ -137,4 +138,5 @@ fn main() {
     // std1::fmt::f_t2();
     // compution::compute::test1();
     // crate1::chrono1::c_t1();
+    // crate1::serde1::test1();
 }

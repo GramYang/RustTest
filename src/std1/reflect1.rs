@@ -1,4 +1,4 @@
-use std::any::Any;
+use std::any::{Any, TypeId};
 use std::fmt::Debug;
 
 //这是rustprimer上的反射例子
@@ -28,4 +28,25 @@ fn load_config<T:Any+Debug>(value:&T)->Vec<String>{
         panic!("No Config File");
     }
     cfgs
+}
+
+//是否能判断一个实例实现了某个trait？不能
+pub fn r_t2(){
+    let a = Ba{a:100};
+    println!("{:?} {:?}",TypeId::of::<dyn Fa>(), a.type_id());
+    //TypeId { t: 4983854625466413765 } TypeId { t: 10339151103279636307 }
+}
+
+trait Fa{
+    fn f(&self);
+}
+
+struct Ba{
+    a:i32,
+}
+
+impl Fa for Ba{
+    fn f(&self){
+        println!("{}",self.a);
+    }
 }

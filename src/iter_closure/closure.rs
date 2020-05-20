@@ -30,6 +30,10 @@ pub fn close_test2(){
     let mut c=Cacher::new(|a|a);
     println!("{}",c.value(1)); //1
     println!("{}",c.value(2)); //1，为什么还会输出1？代码逻辑问题。这个时候需要用take()。
+    //这里必须重新新建一个Cacher的实例来存放新的闭包，直接修改c.calculation报错：显示有两个不同的闭包
+    let x:u32 = 100;
+    let mut c = Cacher::new(move |a| a+x);
+    println!("{}",(c.calculation)(100));
 }
 
 struct Cacher<T> where T:Fn(u32)->u32{ //Fn是闭包函数类型
@@ -67,3 +71,21 @@ pub fn close_test3() {
     println!("{}",equal_to_x1(vec![1,2,3])); //true
     // println!("{:?}",x1); //报错，x1被借用
 }
+
+// type Bibao = dyn Fn(String)->String + 'static;
+//
+// //闭包函数指针
+// pub fn close_test4(){
+//     let a = "456";
+//     let b1: Bibao = move |mut s:String|{
+//         s.push_str(a);
+//         s
+//     };
+//     let mut v = Vec::new();
+//     op1(b1,&v);
+//     v.get(0)(String::from("123"));
+// }
+//
+// fn op1<T:Fn(String) ->String>(t:T,mut v:&Vec<T>){
+//     v.push(t);
+// }
