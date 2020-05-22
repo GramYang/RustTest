@@ -1,3 +1,6 @@
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::convert::TryInto;
 
 //方法写法测试
 pub fn s_test1(){
@@ -159,4 +162,56 @@ impl Builder2{
     }
 }
 
+//测试：方法在传递引用时，擅自给引用添加mut会修改原来的值吗？需要。
+//方法的&参数可以接收&mut参数，反过来不行。
+//方法不是引用的话mut无限制。
+pub fn s_t2(){
+    let mut b = Builder3::new(String::from("114"));
+    let mut s1 = String::from("51");
+    b.op1(&mut s1);//Builder3 { s: "114514" }
+    let s2 = String::from("1919");
+    b.op2(s2);//1919810
+}
 
+#[derive(Debug)]
+struct Builder3{
+    s:String
+}
+
+impl Builder3{
+    fn new(s:String) ->Self{
+        Builder3{s}
+    }
+
+    fn op1(&mut self, x: &mut String){
+        x.push('4');
+        self.s.push_str(x);
+        println!("{:?}",self);
+    }
+
+    fn op2(&self, mut x:String){
+        x.push_str("810");
+        println!("{}",x);
+    }
+
+    fn op3(&self){
+    }
+
+    fn op4(&mut self){
+    }
+}
+
+//测试智能指针层层包裹下的方法调用
+pub fn s_t3(){
+    //RefCell内部值的方法调用
+    let a = Builder3{s:"114".to_string()};
+    let b = Builder3{s:"514".to_string()};
+    let c = Rc::new(RefCell::new(b));
+    a.op3();
+    c.borrow().op3();
+    let mut a1 = Builder3{s:"114".to_string()};
+    let mut b1 = Builder3{s:"514".to_string()};
+    let c1 = Rc::new(RefCell::new(b1));
+    a1.op4();
+    c1.borrow_mut().op4();
+}

@@ -30,11 +30,16 @@ fn load_config<T:Any+Debug>(value:&T)->Vec<String>{
     cfgs
 }
 
-//是否能判断一个实例实现了某个trait？不能
+//是否能判断一个实例实现了某个trait？只能用match
 pub fn r_t2(){
     let a = Ba{a:100};
     println!("{:?} {:?}",TypeId::of::<dyn Fa>(), a.type_id());
     //TypeId { t: 4983854625466413765 } TypeId { t: 10339151103279636307 }
+    println!("{:?} {:?}",TypeId::of::<Box<dyn Fa>>(), TypeId::of::<Box<Ba>>());
+    //TypeId { t: 18112260363541837233 } TypeId { t: 7166434506009053646 }
+    match a {
+        Fa=>println!("Fa"),//Fa
+    }
 }
 
 trait Fa{

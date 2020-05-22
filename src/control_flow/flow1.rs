@@ -28,7 +28,7 @@ pub fn flow_test1() {
         // 2
         // 1
     }
-    for n in 1..101{
+    for n in 1..10{
         if n%15==0{
             println!("fizzbuzz");
         } else if n%3==0{
@@ -39,7 +39,7 @@ pub fn flow_test1() {
             println!("{}",n);
         }
     }
-    for n in 1..=100{
+    for n in 1..=10{
         if n%30==0{
             println!("fizzbuzz");
         } else if n%6==0{
@@ -73,15 +73,46 @@ pub fn flow_test1() {
     println!("{:?}",names1);
 }
 
-//测试0..n和0..=n的区别，这说明0..n不包括n，而0..=n包括n
-// 0 1 2 3 4
-// 0 1 2 3 4 5
-pub fn flow_test2(){
-    for n in 0..5{
-        print!("{} ",n);
+//测试一下控制流操作符对所有权的占据
+pub fn f_t2(){
+    let mut w = Wrap::new(1, String::from("a"), 2, String::from("b"),
+                          3, String::from("c"));
+    println!("{}",w.op1());//20
+    println!("{}",w.op2());//true
+}
+
+struct Wrap{
+    a:i32,
+    b:String,
+    c:Vec<i32>,
+    d:Vec<String>,
+    e:Option<i32>,
+    f:Option<String>,
+}
+
+impl Wrap{
+    fn new(x1:i32,y1:String,x2:i32,y2:String,x3:i32,y3:String)-> Self{
+        Wrap{
+            a:x1,b:y1,c:vec![x2],d:vec![y2],e:Some(x3),f:Some(y3),
+        }
     }
-    println!();
-    for n in 0..=5{
-        print!("{} ",n);
+
+    //loop
+    fn op1(&mut self) -> i32{
+        let s = loop{
+            self.a +=1;
+            if self.a == 10{
+                break self.a*2
+            }
+        };
+        s
+    }
+
+    //if
+    fn op2(&mut self) -> bool{
+        if self.b.as_str() == "a"{//字符串的比较一定要是&str，String不能比较
+            return true;
+        }
+        return false;
     }
 }

@@ -1,12 +1,19 @@
 use std::any::{Any,TypeId};
 use std::net::SocketAddr;
 
-//shadow测试
+//shadow，声明
 pub fn let_test1() {
     let x=1;
     let x =x+1;
-    println!("{}",x) //2
-
+    assert_eq!(2,x);
+    let x = "123";
+    assert_eq!(x,"123");
+    let mut y =None;//不能声明，必须赋值
+    if true{
+        y = Some(5);
+    }
+    assert_eq!(5,y.unwrap());
+    assert_eq!(Some(5),y);
 }
 
 //数据类型测试
@@ -89,4 +96,18 @@ pub fn let_test3(){
     // unsafe fn bump_levels_unsafe2() -> u32 {
     //     return atomic_add(&mut LEVELS, 1);
     // }
+}
+
+//测试&和*，一个实例的多个引用的地址相同
+pub fn l_t4(){
+    let a = 5;
+    let b = &a;
+    let c = &a;//可以存在多个不可变引用，不能和可变引用共存
+    println!("{:p} {:p} {:p} {:p}",&a,&&a,&&&a,&&&&a);//四个地址都不同
+    println!("{:p} {:p}",b,c);//两个地址相同
+    let mut a1 = 6;
+    let b1 = &mut a1;//只能有一个可变引用，且可变引用和不可变引用不能共存
+    let c1 = &*b1;//*消除了mut，获取了一个不可变引用
+    let e1 = &*b1;//可以通过可变引用获取多个不可变引用
+    println!("{:p} {:p} {:p}",b1,c1,e1);//三个地址相同
 }

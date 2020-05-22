@@ -93,3 +93,18 @@ fn impl_test(x:impl ImplTest) -> impl ImplTest{
     x.it();
     return x;
 }
+
+//函数指针能否引用外部变量？不能！
+pub fn f_t5(){
+    // println!("{}",big(1,String::from("a"))(2,String::from("b")));
+}
+
+// fn big(a:i32,b:String) -> fn(i32,String)->String{
+//     fn small(c:i32,d:String) ->String{
+//         let mut s=String::new();
+//         s.push((a+c).to_string());//报错，不能捕获a
+//         s.push_str(&b);
+//         s.push_str(&d);
+//         s
+//     }
+// }

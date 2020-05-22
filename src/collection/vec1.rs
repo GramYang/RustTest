@@ -47,6 +47,8 @@ pub fn vec_test2(){
     let mut v = vec![1, 2, 3];
     v.clear();
     assert!(v.is_empty());
+    let v = Vec::<i32>::new();
+    assert!(v.is_empty());
     //append修改两者
     let mut vec = vec![1, 2, 3];
     let mut vec2 = vec![4, 5, 6];

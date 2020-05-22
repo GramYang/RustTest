@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 //一个奇怪的表达式：打印一个None数组，长度为10，其中else返回的数值会与cap相加作为数组的长度
 pub fn e_test1(){
     let cap = 10;
@@ -53,7 +55,7 @@ pub fn e_test2(){
     assert!(12.5 > 12.2);
     assert!([1, 2, 3] < [1, 3, 4]);
     assert!('A' <= 'B');
-    assert!("World" >= "Hello");
+    assert!("World" >= "Hello");//字符串比较只能用&str，不能用String
     //数组表达式
     ([1, 2, 3, 4])[2];        // Evaluates to 3
     let b = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
@@ -143,25 +145,65 @@ pub fn e_test2(){
     ..;     // std::ops::RangeFull, 匹配所有
     5..=6;  // std::ops::RangeInclusive, 5<=x<=6
     ..=7;   // std::ops::RangeToInclusive, x<=7
-    //if let表达式，可以和match互换
-    let x = Some(3);
-    let a = if let Some(1) = x {
-        1
-    } else if x == Some(2) {
-        2
-    } else if let Some(y) = x {
-        y
-    } else {
-        -1
+}
+
+//loop表达式，单独摘出来测试
+pub fn l_t3(){
+    //while
+    let mut i = 0;
+    while i < 3 {
+        print!("hello ");
+        i = i + 1;
+    }
+    let mut x = vec![1, 2, 3];
+    while let Some(y) = x.pop() {
+        print!("{} ", y);
+    }
+    while let _ = 5 {
+        println!("Irrefutable patterns are always true");
+        break;
+    }
+    let mut vals = vec![2, 3, 1, 2, 2];
+    while let Some(v @ 1) | Some(v @ 2) = vals.pop() {
+        print!("{} ", v);//2 2 1, 3不符合条件就break了
+    }
+    //for
+    let v = &["apples", "cake", "coffee"];
+    for text in v {
+        print!("{} ", text);
+    }
+    let v = ["apples", "cake", "coffee"];
+    let mut index=0;//rust中没有++，只能用这种方式输出数组的下标
+    for text in v.iter(){
+        print!(" {}{} ", index,text);
+        index+=1;
+    }
+    let mut sum = 0;
+    for n in 1..11 {
+        sum += n;
+    }
+    assert_eq!(sum, 55);
+    let v = vec!["a","b","c","d"];
+    for t in v.iter(){
+        print!("{} ",t);//a b c d
+    }
+    let mut m = HashMap::<i32,&str>::new();
+    m.insert(1,"a");
+    m.insert(2,"b");
+    m.insert(3,"c");
+    m.insert(4,"c");
+    for entry in m.iter(){
+        println!("{} {}",entry.0,entry.1);
+    }
+    //loop
+    let (mut a, mut b) = (1, 1);
+    let result = loop {
+        if b > 10 {
+            break b;
+        }
+        let c = a + b;
+        a = b;
+        b = c;
     };
-    assert_eq!(a, 3);
-    enum E {
-        X(u8),
-        Y(u8),
-        Z(u8),
-    }
-    let v = E::Y(12);
-    if let E::X(n) | E::Y(n) = v {
-        assert_eq!(n, 12);
-    }
+    assert_eq!(result, 13);
 }

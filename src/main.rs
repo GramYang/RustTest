@@ -18,18 +18,22 @@ mod thread_pool;
 mod std1;
 mod compution;
 mod crate1;
+#[macro_use] extern crate log;
+extern crate simplelog;
 
 fn main() {
     // variable::let1::let_test1();
     // variable::let1::let_test2();
     // variable::let1::let_test3();
+    // variable::let1::l_t4();
     // variable::cast1::c_test1();
     // function::fn1::fn_test1();
     // function::fn1::fn_test2();
     // function::fn1::fn_test3();
     // function::fn1::fn_test4();
+    // function::fn1::f_t5();
     // control_flow::flow1::flow_test1();
-    // control_flow::flow1::flow_test2();
+    // control_flow::flow1::f_t2();
     // ownership::owner1::owner_test1();
     // ownership::owner1::owner_test2();
     // ownership::owner1::owner_test3();
@@ -41,16 +45,21 @@ fn main() {
     // struct_enum::enum1::o_test1();
     // struct_enum::enum1::r_test1();
     // struct_enum::struct1::s_test1();
+    // struct_enum::struct1::s_t2();
+    // struct_enum::struct1::s_t3();
+    // struct_enum::type1::t_t1();
     // collection::vec1::vec_test1();
     // collection::vec1::vec_test2();
     // collection::str1::str_test1();
     // collection::str1::str_test2();
-    // collection::str1::str_test3();
-    collection::box1::b_t1();
+    // collection::str1::s_t3();
+    // collection::box1::b_t1();
     // pattern::expr1::e_test1();
     // pattern::expr1::e_test2();
+    // pattern::expr1::l_t3();
     // pattern::pat1::p_test1();
-    // pattern::pat1::p_test10();
+    // pattern::pat1::p_t2();
+    // pattern::pat1::p_t3();
     // g_t_l::generic::g_test1();
     // g_t_l::generic::g_test2();
     // g_t_l::trait1::t_test1();
@@ -61,6 +70,8 @@ fn main() {
     // iter_closure::closure::close_test1();
     // iter_closure::closure::close_test2();
     // iter_closure::closure::close_test3();
+    // iter_closure::closure::c_t4();
+    // iter_closure::closure::c_t5();
     // iter_closure::iter::iter_test1();
     // iter_closure::iter::iter_test2();
     // iter_closure::iter::iter_test3()
@@ -136,7 +147,11 @@ fn main() {
     // std1::time1::t_t1();
     // std1::fmt::f_t1();
     // std1::fmt::f_t2();
+    // std1::default1::t1();
     // compution::compute::test1();
     // crate1::chrono1::c_t1();
     // crate1::serde1::test1();
+    // crate1::simplelog1::t1();
+    // crate1::log1::t1();
+    // crate1::log1::t2();
 }

@@ -87,22 +87,61 @@ pub fn rc_test2(){
 
 //RefCell基本使用
 pub fn rc_test2_1(){
+    //borrow, 可以有多个borrow
     let c = RefCell::new(5);
-    println!("{}",c.borrow());//返回RefCell中包裹的值，5，这里不会转移所有权
-    println!("{}", c.into_inner());//返回RefCell中包裹的值，5，这里会转移所有权
-    let c = RefCell::new(5);//上面的c已经move了，这里重新初始化
-    let old_c = c.replace(6);
-    println!("{} {}",c.into_inner(),old_c);//RefCell是不能直接打印的，6 5
-    let c1 = RefCell::new(5);
-    let d1 = RefCell::new(6);
-    c1.swap(&d1);
-    assert_eq!(c1, RefCell::new(6));
-    assert_eq!(d1, RefCell::new(5));
-    let p = RefCell::new(5);
-    println!("{:p}",p.as_ptr());//0xf7fc20
-    let mut c2 = RefCell::new(5);
-    *c2.get_mut() += 1;
-    assert_eq!(c2, RefCell::new(6));
+    let borrowed_five = c.borrow();
+    let borrowed_five2 = c.borrow();
+    //borrow_mut，只能有一个borrow_mut
+    let c = RefCell::new(5);
+    *c.borrow_mut() = 7;
+    assert_eq!(*c.borrow(), 7);
+    //borrow和borrow_mut不能共存
+    // let result = thread::spawn(move || {
+    //     let c = RefCell::new(5);
+    //     let m = c.borrow_mut();
+    //     let b = c.borrow(); // this causes a panic
+    // }).join();
+    // assert!(result.is_err());
+    //get_mut和borrow_mut类似，区别是c必须是mut的，官方建议使用borrow_mut
+    let mut c = RefCell::new(5);
+    *c.get_mut() += 1;
+    assert_eq!(c, RefCell::new(6));
+    //into_inner消费RefCell，返回其中包裹的值
+    let c = RefCell::new(5);
+    let five = c.into_inner();
+    //replace替换内部的值并返回旧值
+    let cell = RefCell::new(5);
+    let old_value = cell.replace(6);
+    assert_eq!(old_value, 5);
+    assert_eq!(cell, RefCell::new(6));
+    //replace_with
+    let cell = RefCell::new(5);
+    let old_value = cell.replace_with(|&mut old| old + 1);
+    assert_eq!(old_value, 5);
+    assert_eq!(cell, RefCell::new(6));
+    //swap替换两个RefCell的包裹值
+    let c = RefCell::new(5);
+    let d = RefCell::new(6);
+    c.swap(&d);
+    assert_eq!(c, RefCell::new(6));
+    assert_eq!(d, RefCell::new(5));
+    //try_borrow不可变借用内部值，如果事先borrow_mut了则返回Err
+    let c = RefCell::new(5);
+    {
+        let m = c.borrow_mut();
+        assert!(c.try_borrow().is_err());
+    }
+    {
+        let m = c.borrow();
+        assert!(c.try_borrow().is_ok());
+    }
+    //try_borrow_mut可变借用内部值，不能和borrow共存，只能borrow_mut一次
+    let c = RefCell::new(5);
+    {
+        let m = c.borrow();
+        assert!(c.try_borrow_mut().is_err());
+    }
+    assert!(c.try_borrow_mut().is_ok());
 }
 
 #[derive(Debug)]
