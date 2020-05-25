@@ -209,8 +209,9 @@ pub fn str_test2(){
     let s = "Löwe 老虎 Léopard";
     let x: &[_] = &['1', '2'];
     assert_eq!(s.rfind(x), None);
-    //get返回子字符串
+    //get返回子字符串&str
     let v = String::from("🗻∈🌏");
+    let v1 = v.get(0..4);
     assert_eq!(Some("🗻"), v.get(0..4));
 // indices not on UTF-8 sequence boundaries
     assert!(v.get(1..).is_none());
@@ -221,8 +222,9 @@ pub fn str_test2(){
     assert_eq!(v.get(0..12),Some("田所浩二"));
     assert_eq!(v.get(12..18),Some("114514"));
     assert_eq!(v.get(18..),Some("1919810"));
-    //get_mut返回子字符串的可变引用
+    //get_mut返回子字符串&mut str
     let mut v = String::from("hello");
+    let v1 = v.get_mut(0..5);
 // correct length
     assert!(v.get_mut(0..5).is_some());
 // out of bounds
@@ -468,13 +470,13 @@ pub fn str_test2(){
 
 //字符串遍历
 pub fn s_t3(){
-    let s = String::from("1145141919810");
+    let ref s = String::from("1145141919810");
     let mut ci = s.as_str().char_indices();
     while let Some((k,v)) = ci.next() {
-        println!("{} {}",k,v);
+        print!(" {} {} ",k,v);
     }
     let mut c = s.as_str().chars();
     while let Some(v) = c.next() {
-        println!("{}",v);
+        print!("{}",v);
     }
 }

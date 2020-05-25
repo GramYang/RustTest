@@ -1,6 +1,5 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use std::convert::TryInto;
 
 //方法写法测试
 pub fn s_test1(){
@@ -195,9 +194,22 @@ impl Builder3{
     }
 
     fn op3(&self){
+        println!("{:p}",self);
     }
 
     fn op4(&mut self){
+        println!("{:p}",self);
+    }
+
+    //该写法来自gin/tree/insertChild
+    //在方法内替换实例：一般写法
+    //如果x为Rc+RefCell套娃的话，其难点在于n不能由&mut切换成Rc<RefCell>
+    fn op5(&mut self){
+        let mut n = self;
+        n.s.push_str("孙笑川");
+        let mut x = Builder3::new("蔡徐坤".to_string());
+        n = &mut x;
+        println!("{:?}",n);//Builder3 { s: "蔡徐坤" }
     }
 }
 
@@ -208,10 +220,22 @@ pub fn s_t3(){
     let b = Builder3{s:"514".to_string()};
     let c = Rc::new(RefCell::new(b));
     a.op3();
+    println!("a ptr {:p}",&a);//同op3打印指针
     c.borrow().op3();
+    println!("c ptr {:p}",&c.borrow());
     let mut a1 = Builder3{s:"114".to_string()};
     let mut b1 = Builder3{s:"514".to_string()};
     let c1 = Rc::new(RefCell::new(b1));
     a1.op4();
+    println!("a1 ptr {:p}",&a1);//同op4打印指针
     c1.borrow_mut().op4();
+    println!("c1 ptr {:p}",&c1.borrow());
+    //修改值
+    let c2 = Rc::clone(&c1);
+    c2.borrow_mut().s.push_str("1919");
+    println!("{:?}",c2);
+    //测试在方法中替换self的写法，该写法来自gin/tree/insertChild
+    let mut d = Builder3::new("nmsl".to_string());
+    d.op5();
+    println!("{:?}",d);//Builder3 { s: "nmsl孙笑川" }
 }

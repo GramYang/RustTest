@@ -1,8 +1,6 @@
 use std::rc::{Rc,Weak};
-use std::cell::{RefCell,Ref,RefMut};
-use std::sync::Arc;
+use std::cell::RefCell;
 use std::thread;
-use std::ops::Deref;
 
 //Rc使用，clone和强引用数
 pub fn rc_test1(){
@@ -17,11 +15,17 @@ pub fn rc_test1(){
     println!("final {}",Rc::strong_count(&a)); //2
 }
 
+enum List{
+    Cons(i32,Rc<List>),
+    Nil,
+}
+
 //Rc基本测试
-pub fn rc_test1_1(){
+pub fn rc_test2(){
     let a =Rc::new(5);
     println!("{} {} {:p}",a,*a,a);//5 5 0xee2830
     let b = Rc::new(RcBox{x:100});
+    // let b1 = *b;//不能这么写，报错
     println!("{:?} {:?} {:p}",b,*b,b);//RcBox { x: 100 } RcBox { x: 100 } 0xf930f0
     //get_mut修改Rc包裹的值
     let mut x = Rc::new(3);
@@ -68,89 +72,7 @@ struct RcBox{
     x:i32
 }
 
-enum List{
-    Cons(i32,Rc<List>),
-    Nil,
-}
-
-//RefCell使用例子
-pub fn rc_test2(){
-    let value =Rc::new(RefCell::new(5));
-    let a=Rc::new(List1::Cons(Rc::clone(&value),Rc::new(List1::Nil)));
-    let b=List1::Cons(Rc::new(RefCell::new(6)),Rc::clone(&a));
-    let c=List1::Cons(Rc::new(RefCell::new(10)),Rc::clone(&a));
-    *value.borrow_mut() +=10;
-    println!("{:?}",a); //Cons(RefCell { value: 15 }, Nil)
-    println!("{:?}",b); //Cons(RefCell { value: 6 }, Cons(RefCell { value: 15 }, Nil))
-    println!("{:?}",c); //Cons(RefCell { value: 10 }, Cons(RefCell { value: 15 }, Nil))
-}
-
-//RefCell基本使用
-pub fn rc_test2_1(){
-    //borrow, 可以有多个borrow
-    let c = RefCell::new(5);
-    let borrowed_five = c.borrow();
-    let borrowed_five2 = c.borrow();
-    //borrow_mut，只能有一个borrow_mut
-    let c = RefCell::new(5);
-    *c.borrow_mut() = 7;
-    assert_eq!(*c.borrow(), 7);
-    //borrow和borrow_mut不能共存
-    // let result = thread::spawn(move || {
-    //     let c = RefCell::new(5);
-    //     let m = c.borrow_mut();
-    //     let b = c.borrow(); // this causes a panic
-    // }).join();
-    // assert!(result.is_err());
-    //get_mut和borrow_mut类似，区别是c必须是mut的，官方建议使用borrow_mut
-    let mut c = RefCell::new(5);
-    *c.get_mut() += 1;
-    assert_eq!(c, RefCell::new(6));
-    //into_inner消费RefCell，返回其中包裹的值
-    let c = RefCell::new(5);
-    let five = c.into_inner();
-    //replace替换内部的值并返回旧值
-    let cell = RefCell::new(5);
-    let old_value = cell.replace(6);
-    assert_eq!(old_value, 5);
-    assert_eq!(cell, RefCell::new(6));
-    //replace_with
-    let cell = RefCell::new(5);
-    let old_value = cell.replace_with(|&mut old| old + 1);
-    assert_eq!(old_value, 5);
-    assert_eq!(cell, RefCell::new(6));
-    //swap替换两个RefCell的包裹值
-    let c = RefCell::new(5);
-    let d = RefCell::new(6);
-    c.swap(&d);
-    assert_eq!(c, RefCell::new(6));
-    assert_eq!(d, RefCell::new(5));
-    //try_borrow不可变借用内部值，如果事先borrow_mut了则返回Err
-    let c = RefCell::new(5);
-    {
-        let m = c.borrow_mut();
-        assert!(c.try_borrow().is_err());
-    }
-    {
-        let m = c.borrow();
-        assert!(c.try_borrow().is_ok());
-    }
-    //try_borrow_mut可变借用内部值，不能和borrow共存，只能borrow_mut一次
-    let c = RefCell::new(5);
-    {
-        let m = c.borrow();
-        assert!(c.try_borrow_mut().is_err());
-    }
-    assert!(c.try_borrow_mut().is_ok());
-}
-
-#[derive(Debug)]
-enum List1{
-    Cons(Rc<RefCell<i32>>,Rc<List1>),
-    Nil,
-}
-
-//Weak+Rc+RefCell
+//例子：Weak+Rc+RefCell
 pub fn rc_test3() {
     let leaf=Rc::new(Node{
         value:3,
@@ -186,7 +108,7 @@ struct Node{
 
 
 //weak基本使用
-pub fn rc_test3_1(){
+pub fn rc_test4(){
     let a:Weak<i32> = Weak::new();//这里必须要指定类型
     println!("{}", a.upgrade().is_none());//true
     let f = Rc::new(5);
@@ -201,8 +123,8 @@ pub fn rc_test3_1(){
     println!("{}",first.ptr_eq(&third));//false
 }
 
-//RefCell+Weak+Option
-pub fn rc_test3_2(){
+//例子：RefCell+Weak+Option
+pub fn rc_test5(){
     let mut big = BigBox{b:Some(RefCell::new(Weak::new()))};
     let small = Rc::new(SmallBox{s:100});
     //因为unwrap会占用所有权，因此需要用.as_ref().unwrap()
@@ -221,42 +143,4 @@ struct BigBox{
 #[derive(Debug)]
 struct SmallBox{
     s:i32
-}
-
-//Ref和RefMut的粒子，这两个是borrow和borrow_mut的返回值
-pub fn rc_test4(){
-    let c=RefCell::new((5, 'b'));
-    let b1:Ref<(i32,char)> = c.borrow();
-    let b1_1 = *b1;
-    let b2 = Ref::map(b1,|t|&t.0);
-    // println!("{:?}",b1); //b1已经moved了
-    println!("{:?}",b2); //5
-    println!("{:?}",c); //RefCell { value: (5, 'b') }，Ref只是借用了RefCell
-    println!("{:?}",c.borrow()); //(5, 'b')
-    let x = RefCell::new((5,'b'));
-    {
-        let y1:RefMut<(u32,char)>=x.borrow_mut();
-        let y1_1 = *y1;
-        let mut y2:RefMut<u32>=RefMut::map(y1,|t|&mut t.0);
-        println!("{}",y2); //5
-        *y2 = 42;
-    }
-    println!("{:?}",*x.borrow()); //(42, 'b')
-}
-
-//Arc使用
-// 5
-// 5
-// 5
-// 5
-// 报错退出
-pub fn rc_test5(){
-    let five = Arc::new(5);
-    println!("{}",five);
-    for _ in 0..10 {
-        let five = Arc::clone(&five);
-        thread::spawn(move || {
-            println!("{:?}", five);
-        });
-    }
 }

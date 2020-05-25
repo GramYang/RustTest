@@ -4,14 +4,14 @@ pub fn p_test1(){
     let mut num=5;
     let r1 = &num as *const i32;
     let r2 = &mut num as *mut i32;
+    let r3 = unsafe{&*r2};
+    let r4 = unsafe {&*r1};
     unsafe{
-        println!("{:p} {:p}",r1,r2); //0x3450affbe4 0x3450affbe4
+        println!("{:p} {:p} {:p} {:p}",r1,r2,r3,r4); //四个地址一致
     }
-    let mut a = Box::new(5);
-    let raw:*mut _ = &mut *a; //这种写法不用as
-    unsafe{
-        println!("{:p}",raw); //0x24e48436aa0
-    }
+    let mut a = Box::new(num);
+    let raw = &mut *a; //这种写法不用as
+    println!("{:p}",raw); //地址和上面不一致
 }
 
 //unsafe的函数和方法

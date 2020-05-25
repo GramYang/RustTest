@@ -18,14 +18,14 @@ mod thread_pool;
 mod std1;
 mod compution;
 mod crate1;
+mod error1;
 #[macro_use] extern crate log;
 extern crate simplelog;
 
 fn main() {
     // variable::let1::let_test1();
     // variable::let1::let_test2();
-    // variable::let1::let_test3();
-    // variable::let1::l_t4();
+    // variable::let1::l_t3();
     // variable::cast1::c_test1();
     // function::fn1::fn_test1();
     // function::fn1::fn_test2();
@@ -49,7 +49,7 @@ fn main() {
     // struct_enum::struct1::s_t3();
     // struct_enum::type1::t_t1();
     // collection::vec1::vec_test1();
-    // collection::vec1::vec_test2();
+    // collection::vec1::v_t2();
     // collection::str1::str_test1();
     // collection::str1::str_test2();
     // collection::str1::s_t3();
@@ -66,7 +66,6 @@ fn main() {
     // g_t_l::trait1::t_test2();
     // g_t_l::trait1::t_test3();
     // g_t_l::lifetime::l_test1();
-    // g_t_l::lifetime::f_test2();
     // iter_closure::closure::close_test1();
     // iter_closure::closure::close_test2();
     // iter_closure::closure::close_test3();
@@ -82,14 +81,17 @@ fn main() {
     // smartptr::trait1::t_test3();
     // smartptr::trait1::t_test4();
     // smartptr::rc1::rc_test1();
-    // smartptr::rc1::rc_test1_1();
     // smartptr::rc1::rc_test2();
-    // smartptr::rc1::rc_test2_1();
     // smartptr::rc1::rc_test3();
-    // smartptr::rc1::rc_test3_1();
-    // smartptr::rc1::rc_test3_2();
     // smartptr::rc1::rc_test4();
     // smartptr::rc1::rc_test5();
+    // smartptr::cell1::c_t1();
+    // smartptr::cell1::c_t2();
+    // smartptr::cell1::c_t3();
+    // smartptr::cell1::c_t4();
+    // smartptr::cell1::c_t5();
+    // smartptr::cell1::c_t6();
+    // smartptr::sync1::s_t1();
     // concurrency::thread1::t_test1();
     // concurrency::thread1::t_test2();
     // concurrency::thread1::t_test3();
@@ -154,4 +156,5 @@ fn main() {
     // crate1::simplelog1::t1();
     // crate1::log1::t1();
     // crate1::log1::t2();
+    // error1::err1::t1();
 }

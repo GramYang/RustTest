@@ -5,6 +5,8 @@ pub fn fn_test1() {
     let a = [1, 2, 3, 4, 8, 9];
     println!("There is 7 in the array: {}", find(7, &a)); //false
     println!("There is 8 in the array: {}", find(8, &a)); //true
+    let (x,y) = two(2);
+    println!("返回元组: {} {}",x,y);
 }
 
 fn find(n: i32, a: &[i32]) -> bool {
@@ -14,6 +16,10 @@ fn find(n: i32, a: &[i32]) -> bool {
         }
     }
     false
+}
+
+fn two(n: i32) -> (i32, i32) {
+    (n*n, n*n*n)
 }
 
 //空返回类型测试。函数无返回类型也是可以return的，返回的是()，return时会执行附带的函数或者宏。

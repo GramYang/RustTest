@@ -5,10 +5,12 @@ use std::net::SocketAddr;
 pub fn let_test1() {
     let x=1;
     let x =x+1;
-    assert_eq!(2,x);
     let x = "123";
-    assert_eq!(x,"123");
-    let mut y =None;//不能声明，必须赋值
+    //用结构体封装来跳过变量类型不能转换的坑
+    let mut b = Bag{a:Some(123),b:None};
+    b = Bag{a:None,b:Some("123".to_string())};
+    //不能声明，必须赋值
+    let mut y =None;
     if true{
         y = Some(5);
     }
@@ -16,27 +18,12 @@ pub fn let_test1() {
     assert_eq!(Some(5),y);
 }
 
-//数据类型测试
-pub fn let_test2() {
-    let guess: u32 = "42".parse().expect("Not a number!");
-    println!("{}",guess); //42
-    let addr :SocketAddr= "127.0.0.1:8090".parse().unwrap();
-    println!("{}", addr); //127.0.0.1:8090
-    // let b:bool;
-    // println!("{}",b); //b没有初始化，会报错
-    let tup = (500,6.4,1);
-    let (x,y,z)=tup;
-    println!("{} {} {}",x,y,z); //500 6.4 1
-    println!("{} {} {}",tup.0,tup.1,tup.2); //500 6.4 1
-    let a=[1,2,3,4,5];
-    let a1=[0;5];
-    println!("{} {}",a[0], a1[0]); //1 3，只能这么访问，貌似不能直接整体输出
-    //用反射判断一下a1中元素的类型
-    println!("{}", TypeId::of::<i32>()==a1[0].type_id()); //true
+struct Bag{
+    a:Option<i32>,b:Option<String>,
 }
 
 //常量和静态变量
-pub fn let_test3(){
+pub fn let_test2(){
     //一般常量
     const BIT1:u32=1<<0;
     const BIT2:u32=1<<1;
@@ -99,15 +86,28 @@ pub fn let_test3(){
 }
 
 //测试&和*，一个实例的多个引用的地址相同
-pub fn l_t4(){
+pub fn l_t3(){
     let a = 5;
     let b = &a;
     let c = &a;//可以存在多个不可变引用，不能和可变引用共存
+    let d = c;//&的赋值不会move，会copy
     println!("{:p} {:p} {:p} {:p}",&a,&&a,&&&a,&&&&a);//四个地址都不同
-    println!("{:p} {:p}",b,c);//两个地址相同
+    println!("{:p} {:p} {:p}",b,c,d);//三个地址相同
     let mut a1 = 6;
-    let b1 = &mut a1;//只能有一个可变引用，且可变引用和不可变引用不能共存
+    {
+        let b11 = &mut a1;
+    }
+    let b1 = &mut a1;//在特定作用域中的特定数据有且只有一个可变引用
     let c1 = &*b1;//*消除了mut，获取了一个不可变引用
     let e1 = &*b1;//可以通过可变引用获取多个不可变引用
     println!("{:p} {:p} {:p}",b1,c1,e1);//三个地址相同
+    let s1 = String::from("114514");
+    let s2 = &s1;
+    let s3 = s2;//&mut的赋值不会move，会copy
+    r(s2);//引用和基本类型一样，传递参数时不会move，会copy
+    println!("{:p} {:p} {:p}",&s1,s2,s3);//三者地址相同0xd1fb80
+}
+
+fn r(s:&String){
+    println!("{:p}",s);//0xd1fb80
 }

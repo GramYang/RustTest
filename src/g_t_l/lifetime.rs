@@ -1,6 +1,7 @@
 
 //生命周期注解函数
 pub fn l_test1() {
+    //函数
     let s1=String::from("abcd");
     let s2="xyz";
     let result1=longest(s1.as_str(),s2);
@@ -12,6 +13,12 @@ pub fn l_test1() {
     }
     println!("{}",result2); //abcd，result2跨作用域存活
     // let _=longest2(&s1,s2); //该函数不能编译
+    //结构体
+    let novel=String::from("Call me Ishmael. Some years ago...");
+    let first_sentence=novel.split('.')
+        .next()
+        .expect("Could not find a '.'");
+    let _=ImportantExcerpt{part:first_sentence};
 }
 
 //指定x和y的生命周期一样
@@ -33,15 +40,6 @@ fn longest1<'a>(x:&'a str, y:& str)->&'a str{
 //     let result=String::from("asd123");
 //     result.as_str()
 // }
-
-//生命周期注解结构体
-pub fn f_test2(){
-    let novel=String::from("Call me Ishmael. Some years ago...");
-    let first_sentence=novel.split('.')
-        .next()
-        .expect("Could not find a '.'");
-    let _=ImportantExcerpt{part:first_sentence};
-}
 
 struct ImportantExcerpt<'a>{
     part:&'a str,
