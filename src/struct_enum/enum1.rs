@@ -107,3 +107,23 @@ pub fn r_test1(){
         }
     }//输出 2 4 6 8
 }
+
+//测试enum取参数
+pub fn et3(){
+    let s = State::A(10,20);
+    match s{
+        State::A{0:a,1:b} => println!("{} {}",a,b),
+        _ => {},
+    }
+    let s1 = State::C{x:30,y:40};
+    match s1{
+        State::C{x,y} => println!("{} {}",x,y),
+        _ => {},
+    }
+}
+
+enum State{
+    A(usize,usize),
+    B(usize),
+    C{x:usize,y:usize},
+}

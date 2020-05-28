@@ -1,10 +1,11 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::any::Any;
 
 //方法写法测试
 pub fn s_test1(){
     //Builder模式
-    let b = Builder::new(100,String::from("nmsl"));
+    let mut b = Builder::new(100, String::from("nmsl"));
     println!("{:?}",b.op1(1).op2(String::from("1")));//Builder { a: 101, b: "nmsl1" }
     //所有权测试
     let mut b = Builder::new(123, "321".to_string());
@@ -12,8 +13,13 @@ pub fn s_test1(){
     println!("{:?}",b);//不变
     let b = Builder::new(1234, "4321".to_string());
     b.op5();
+    let b = Builder::new(12345, "54321".to_string());
+    let v1 = 6;
+    let v2 = "6".to_string();
+    b.op6(v1,v2);
+    // b.op6(v1,v2);//测试证明：基本类型作为参数传入方法时会自动copy，不会move
     //Builder模式+Option
-    let b = Builder1::new(200,String::from("nmsl"));
+    let mut b = Builder1::new(200, String::from("nmsl"));
     println!("{:?}",b.op1(1).op2(String::from("1")));//Builder1 { a: Some(201), b: Some("nmsl1") }
     //go指针方法
     let mut b = Builder1::new(300,String::from("omfg"));
@@ -64,14 +70,14 @@ impl Builder{
         Builder{a:x,b:y}
     }
 
-    fn op1(mut self, x:i32) -> Builder {
+    fn op1(&mut self, x:i32) -> &mut Builder {
         self.a+=x;
-        return self;
+        self
     }
 
-    fn op2(mut self, y:String) -> Builder{
+    fn op2(&mut self, y:String) -> &mut Builder{
         self.b += &y;
-        return self;
+        self
     }
 
     //引用参数
@@ -95,6 +101,11 @@ impl Builder{
         println!("{} {}",a1,b1);//1234 4321
         // println!("{:?}",self);//报错，self被借用了
     }
+
+    //参数所有权测试
+    fn op6(& self, a:i32,b:String){
+
+    }
 }
 
 #[derive(Debug)]
@@ -108,14 +119,14 @@ impl Builder1{
         Builder1{a:Some(x),b:Some(y)}
     }
 
-    fn op1(mut self, x:i32) -> Builder1 {
+    fn op1(&mut self, x:i32) -> &mut Builder1 {
         self.a.as_mut().map(|mut s|*s+=x);
-        return self;
+        self
     }
 
-    fn op2(mut self, y:String) -> Builder1{
+    fn op2(&mut self, y:String) -> &mut Builder1{
         self.b.as_mut().map(|s|s.push_str(&y));
-        return self;
+        self
     }
 
     //go的指针方法
@@ -238,4 +249,58 @@ pub fn s_t3(){
     let mut d = Builder3::new("nmsl".to_string());
     d.op5();
     println!("{:?}",d);//Builder3 { s: "nmsl孙笑川" }
+}
+
+//用结构体实例来初始化结构体实例
+pub fn s_t4(){
+    //非方法
+    let b = Bag::new(1,"a".to_string(),"b".to_string());
+    let b1 = Bag{a:2, ..b};//b被占用
+    println!("{:?}",b1);//Bag { a: 2, b: "a", c: [], d: Some("b") }
+    //方法中必须要占用self，你必须要clone，所以不行
+    //元组结构体实例化，注意0域默认是私有的
+    let c = Bag1(20);
+    let c1 = Bag1{0:30};
+    println!("{} {}",c.0,c1.0);
+}
+
+#[derive(Debug)]
+struct Bag{
+    a:i32,
+    b:String,
+    c:Vec<String>,
+    d:Option<String>,
+}
+
+struct Bag1(i32);
+
+impl Bag {
+    fn new(a:i32,b:String,d:String) ->Bag{
+        Bag{ a,b,c:vec![],d:Some(d), }
+    }
+}
+
+//泛型结构体+Vec+Any
+pub fn st5(){
+    let mut vec:Vec<Box<dyn Any>> = vec![];
+    vec.push(Box::new(Bag21{a:100,b:String::from("蔡徐坤")}));
+    vec.push(Box::new(Bag22{a:200,b:String::from("孙笑川")}));
+    let b2 = Bag2{c:String::from("nmsl"),d:vec};
+    println!("{} {} {}",b2.c,b2.d.get(0).unwrap().downcast_ref::<Bag21>().unwrap().b,
+             b2.d.get(1).unwrap().downcast_ref::<Bag22>().unwrap().b);
+}
+
+struct Bag2<T,E>{
+    c:T,
+    d:Vec<E>
+}
+
+struct Bag21{
+    a:i32,
+    b:String,
+}
+
+struct Bag22{
+    a:i32,
+    b:String,
 }

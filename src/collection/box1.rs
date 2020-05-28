@@ -1,4 +1,6 @@
 use std::any::Any;
+use std::alloc::{alloc,Layout, dealloc};
+use std::ptr;
 
 //Box使用
 pub fn b_t1(){
@@ -23,4 +25,22 @@ pub fn b_t1(){
     let my_string = "Hello World".to_string();
     print_if_string(Box::new(my_string));//String (11): Hello World
     print_if_string(Box::new(0i8));
+    //from_raw和into_raw
+    let x = Box::new(5);
+    let ptr = Box::into_raw(x);
+    let x = unsafe { Box::from_raw(ptr) };
+    let x = Box::new(String::from("Hello"));
+    let ptr = Box::into_raw(x);
+    let x = unsafe { Box::from_raw(ptr) };
+    unsafe {
+        let ptr = alloc(Layout::new::<i32>()) as *mut i32;
+        *ptr = 5;
+        let x = Box::from_raw(ptr);
+    }
+    let x = Box::new(String::from("Hello"));
+    let p = Box::into_raw(x);
+    unsafe {//手动drop和释放内存
+        ptr::drop_in_place(p);
+        dealloc(p as *mut u8, Layout::new::<String>());
+    }
 }

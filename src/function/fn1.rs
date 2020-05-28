@@ -37,44 +37,8 @@ fn t1(){
     return panic!("用来返回!");
 }
 
-//函数返回Rc+RefCell，Rc+RefCell作为函数参数
-pub fn fn_test3() {
-    let x = ret_rc();
-    println!("{} {}",x.borrow().a,Rc::strong_count(&x));//100 1
-    x.borrow_mut().a +=10;
-    println!("{} {}",x.borrow().a,Rc::strong_count(&x));//110 1
-    para_rc(Rc::clone(&x));//120 2 from para_rc
-    println!("{} {}",x.borrow().a,Rc::strong_count(&x));//120 1
-    let y = pr_rc(Rc::clone(&x));
-    println!("{} {}",x.borrow().a,Rc::strong_count(&x));//220 2
-    println!("{} {}",y.borrow().a,Rc::strong_count(&y));//220 2
-    println!("{}",Rc::ptr_eq(&x,&y));//true
-}
-
-#[derive(Debug)]
-struct Boob{
-    a:i32,
-}
-
-//作为Rc返回的实例是不能修改的，需要套一层RefCell
-fn ret_rc() -> Rc<RefCell<Boob>>{
-    Rc::new(RefCell::new(Boob{a:100}))
-}
-
-//Rc作为参数
-fn para_rc(x:Rc<RefCell<Boob>>){
-    x.borrow_mut().a += 10;
-    println!("{} {} from para_rc",x.borrow().a,Rc::strong_count(&x));
-}
-
-//Rc既作为参数又作为返回值
-fn pr_rc(x:Rc<RefCell<Boob>>) -> Rc<RefCell<Boob>>{
-    x.borrow_mut().a +=100;
-    return x;
-}
-
 //dyn和impl的使用
-pub fn fn_test4(){
+pub fn fn_test3(){
     let b = Boob{a:100};
     let b1 = impl_test(b);
     // println!("{:?}",b1);//报错，impl ImplTest不能打印
@@ -83,6 +47,10 @@ pub fn fn_test4(){
     fn function2() -> Box<dyn Trait> {
         Box::new(1)
     }//Box内使用trait必须要加dyn来表示Trait是一个trait
+}
+
+struct Boob{
+    a:i32,
 }
 
 trait ImplTest{
@@ -101,7 +69,7 @@ fn impl_test(x:impl ImplTest) -> impl ImplTest{
 }
 
 //函数指针能否引用外部变量？不能！
-pub fn f_t5(){
+pub fn f_t4(){
     // println!("{}",big(1,String::from("a"))(2,String::from("b")));
 }
 
@@ -114,3 +82,28 @@ pub fn f_t5(){
 //         s
 //     }
 // }
+
+type fp = fn(a:String)->String;
+
+fn fp1(a:String)->String{
+    let mut s = String::new();
+    s = a.clone();
+    s
+}
+
+fn fp2(a:String)->String{
+    let mut s = String::new();
+    s = a.clone();
+    s.push_str(&a);
+    s
+}
+
+//函数指针及其实现的赋值和封装，可以不用Box封装就存入容器
+pub fn ft5(){
+    let mut arr:Vec<fp> = vec![];
+    arr.push(fp1);
+    arr.push(fp2);
+    let a1 = arr.get(0).unwrap();
+    let a2 = arr.get(1).unwrap();
+    println!("{} {}", a1("123".to_string()),a2("456".to_string()));
+}

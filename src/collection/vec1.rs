@@ -490,7 +490,7 @@ pub fn v_t2(){
         group[0] = 1;
     }
     assert_eq!(v, [1, 40, 30, 1, 60, 50]);
-    //swap替换下标元素
+    //swap替换下标元素，这里数组和Vec都可以
     let mut v = ["a", "b", "c", "d"];
     v.swap(1, 3);
     assert!(v == ["a", "d", "c", "b"]);

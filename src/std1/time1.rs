@@ -14,6 +14,8 @@ pub fn t_t1(){
     sleep(Duration::new(2, 0));
     println!("{:?}", now.elapsed());//2.0119975s
     println!("{}", now.elapsed().as_secs());//2
+    sleep(Duration::new(2, 0));
+    println!("{:?}", Instant::now() - now);//4.0211284s
     //SystemTime，与Instant的区别是可以与外部沟通例如文件系统和其他进程
     let now = SystemTime::now();
     sleep(Duration::new(2, 0));

@@ -186,7 +186,7 @@ pub fn str_test2(){
     assert!("Ferris".eq_ignore_ascii_case("FERRIS"));
     assert!("Ferrös".eq_ignore_ascii_case("FERRöS"));
     assert!(!"Ferrös".eq_ignore_ascii_case("FERRÖS"));
-    //find寻找首字符下标
+    //find寻找首字符下标，注意，find的参数pat并不会占用其所有权，不过你传入引用也是可以的
     let s = "Löwe 老虎 Léopard";
     assert_eq!(s.find('L'), Some(0));
     assert_eq!(s.find('é'), Some(14));
@@ -412,7 +412,7 @@ pub fn str_test2(){
     assert_eq!(Some("little"), iter.next());
     assert_eq!(Some("lamb"), iter.next());
     assert_eq!(None, iter.next());
-    //splitn在split的基础上指定拆分的子字符串数量
+    //splitn在split的基础上指定拆分的子字符串数量，只能用于&str
     let v: Vec<&str> = "Mary had a little lambda".splitn(3, ' ').collect();
     assert_eq!(v, ["Mary", "had", "a little lambda"]);
     let v: Vec<&str> = "lionXXtigerXleopard".splitn(3, "X").collect();
@@ -468,15 +468,18 @@ pub fn str_test2(){
     assert_eq!("12foo1bar12".trim_start_matches(x), "foo1bar12");
 }
 
-//字符串遍历
+//字符串遍历，在全部都是ascii的情况下，根据下标来取字符
 pub fn s_t3(){
-    let ref s = String::from("1145141919810");
+    let s = String::from("1145141919810");
+    println!("{:?}",get_char(&s,5 as usize));
+}
+
+fn get_char(s:&String,i:usize)->Option<char>{
     let mut ci = s.as_str().char_indices();
     while let Some((k,v)) = ci.next() {
-        print!(" {} {} ",k,v);
+        if i == k{
+            return Some(v);
+        }
     }
-    let mut c = s.as_str().chars();
-    while let Some(v) = c.next() {
-        print!("{}",v);
-    }
+    None
 }

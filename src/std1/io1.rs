@@ -54,7 +54,7 @@ pub fn i_t4() ->io::Result<()>{
     Ok(())
 }
 
-//标准输入
+//stdin
 pub fn i_t5() ->io::Result<()>{
     let mut input = String::new();
     io::stdin().read_line(&mut input)?;
@@ -62,8 +62,19 @@ pub fn i_t5() ->io::Result<()>{
     Ok(())
 }
 
-//标准输出
+//stdout
 pub fn i_t6() ->io::Result<()>{
-    io::stdout().write(&[42])?;
+    //lock返回一个写保护，在函数结束后自动解锁
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+    handle.write_all(b"hello world")?;
+    Ok(())
+}
+
+//stderr
+pub fn i_t7() ->io::Result<()>{
+    let stderr = io::stderr();
+    let mut handle = stderr.lock();
+    handle.write_all(b"hello world")?;
     Ok(())
 }

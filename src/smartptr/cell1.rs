@@ -20,6 +20,7 @@ enum List1{
 }
 
 //RefCell基本使用
+//RefCell<T> 在任何时候只允许有多个不可变借用或一个可变借用。
 pub fn c_t2(){
     //borrow, 可以有多个borrow
     let c = RefCell::new(5);
@@ -27,7 +28,7 @@ pub fn c_t2(){
     let borrowed_five2 = c.borrow();
     //borrow_mut，只能有一个borrow_mut
     let c = RefCell::new(5);
-    *c.borrow_mut() = 7;
+    *c.borrow_mut() = 7;//只能修改成同类型的值
     assert_eq!(*c.borrow(), 7);
     //borrow和borrow_mut不能共存
     // let result = thread::spawn(move || {
@@ -192,4 +193,39 @@ pub fn c_t6(){
     //into_inner类似unwrap
     let uc = UnsafeCell::new(5);
     let five = uc.into_inner();
+}
+
+//测试Rc+RefCell套基本类型和结构体, 测试RefCell套基本类型和结构体
+//Rc+RefCell和RefCell测试结果是一样的
+//Rc+RefCell的变量全部加&后写法不变
+pub fn c_t7(){
+    //Rc+RefCell套结构体，不能加*
+    let x = Rc::new(RefCell::new(Bag{a:1,b:"a".to_string()}));
+    println!("{}",x.borrow().a);//1,这里是不能加*的
+    x.borrow_mut().a +=1;//这里是不能加*的
+    println!("{}",x.borrow().a);//2
+    println!("{}",x.borrow().b);//a,这里是不能加*的
+    x.borrow_mut().b.push_str("114");//这里是不能加*的
+    println!("{}",x.borrow().b);
+    //Rc+RefCell套i32
+    let x1 = Rc::new(RefCell::new(5));
+    println!("{}",*x1.borrow());//可加可不加
+    *x1.borrow_mut() +=1;//必须加*
+    println!("{}",x1.borrow());
+    //RefCell套结构体，不能加*
+    let y = RefCell::new(Bag{a:2,b:"b".to_string()});
+    println!("{}",y.borrow().a);//2,这里是不能加*的
+    y.borrow_mut().a +=1;//这里是不能加*的
+    println!("{}",y.borrow().a);//3
+    //RefCell套i32
+    let y1 = RefCell::new(100);
+    println!("{}",*y1.borrow());//可加可不加
+    *y1.borrow_mut()+=20;//必须加*
+    println!("{}",y1.borrow());
+}
+
+#[derive(Debug)]
+struct Bag{
+    a:i32,
+    b:String,
 }

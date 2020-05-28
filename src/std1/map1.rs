@@ -56,6 +56,14 @@ pub fn hashmap1(){
     // Iceland: 10
     // Denmark: 50
     // Norway: 100
+    //测试HashMap实现了Clone
+    let mut book = HashMap::new();
+    book.insert(1,10);
+    book.insert(2,20);
+    book.insert(3,30);
+    book.insert(4,40);
+    let new_book = book.clone();
+    println!("{:?}",new_book)
 }
 
 fn random()->i32{

@@ -92,6 +92,10 @@ pub fn t_test2(){
     //情况2
     println!("{}",Dog::baby_name()); //Spot
     println!("{}",<Dog as Animal>::baby_name()); //puppy，这是完全限定语法
+    //父trait
+    let p=Point1{x:1,y:2};
+    p.outline_print();
+
 }
 
 struct Point1{
@@ -100,6 +104,7 @@ struct Point1{
 
 trait OutlinePrint: fmt::Display{
     fn outline_print(&self){
+        //to_string是Display的方法，其中调用format_args!("{}", self)会用到fmt::Display的实现
         let output:String=self.to_string();
         let len = output.len();
         println!("{}","*".repeat(len+4));
@@ -118,10 +123,10 @@ impl fmt::Display for Point1{
     }
 }
 
-//父trait
+//newtype模式
 pub fn t_test3(){
-    let p=Point1{x:1,y:2};
-    p.outline_print();
+    let w=Wrapper(vec![String::from("hello"),String::from("world")]);
+    println!("{}",w); //[hello, world]
 }
 
 struct Wrapper(Vec<String>);
@@ -132,8 +137,3 @@ impl fmt::Display for Wrapper{
     }
 }
 
-//newtype模式
-pub fn t_test4(){
-    let w=Wrapper(vec![String::from("hello"),String::from("world")]);
-    println!("{}",w); //[hello, world]
-}

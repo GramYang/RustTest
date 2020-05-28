@@ -5,7 +5,7 @@ mod ownership;
 mod struct_enum;
 mod collection;
 mod pattern;
-mod g_t_l;
+mod g_l;
 mod iter_closure;
 mod smartptr;
 mod concurrency;
@@ -20,7 +20,10 @@ mod compution;
 mod crate1;
 mod error1;
 #[macro_use] extern crate log;
-extern crate simplelog;
+
+use std::error::Error;
+
+mod derive1;
 
 fn main() {
     // variable::let1::let_test1();
@@ -30,23 +33,20 @@ fn main() {
     // function::fn1::fn_test1();
     // function::fn1::fn_test2();
     // function::fn1::fn_test3();
-    // function::fn1::fn_test4();
-    // function::fn1::f_t5();
+    // function::fn1::f_t4();
+    // function::fn1::ft5();
     // control_flow::flow1::flow_test1();
     // control_flow::flow1::f_t2();
-    // ownership::owner1::owner_test1();
-    // ownership::owner1::owner_test2();
-    // ownership::owner1::owner_test3();
-    // ownership::owner1::owner_test4();
-    // ownership::owner1::owner_test5();
-    // ownership::owner2::box_test();
-    // ownership::owner2::vec_test();
-    // ownership::owner2::refcell_test();
+    // control_flow::flow1::f_t3();
+    // ownership::owner1::o_t1();
     // struct_enum::enum1::o_test1();
     // struct_enum::enum1::r_test1();
+    // struct_enum::enum1::et3();
     // struct_enum::struct1::s_test1();
     // struct_enum::struct1::s_t2();
     // struct_enum::struct1::s_t3();
+    // struct_enum::struct1::s_t4();
+    // struct_enum::struct1::st5();
     // struct_enum::type1::t_t1();
     // collection::vec1::vec_test1();
     // collection::vec1::v_t2();
@@ -60,12 +60,9 @@ fn main() {
     // pattern::pat1::p_test1();
     // pattern::pat1::p_t2();
     // pattern::pat1::p_t3();
-    // g_t_l::generic::g_test1();
-    // g_t_l::generic::g_test2();
-    // g_t_l::trait1::t_test1();
-    // g_t_l::trait1::t_test2();
-    // g_t_l::trait1::t_test3();
-    // g_t_l::lifetime::l_test1();
+    // g_l::generic::g_test1();
+    // g_l::generic::g_test2();
+    // g_l::lifetime::l_test1();
     // iter_closure::closure::close_test1();
     // iter_closure::closure::close_test2();
     // iter_closure::closure::close_test3();
@@ -75,11 +72,6 @@ fn main() {
     // iter_closure::iter::iter_test2();
     // iter_closure::iter::iter_test3()
     // iter_closure::iter::iter_test4();
-    // smartptr::box1::b_test1();
-    // smartptr::trait1::t_test1();
-    // smartptr::trait1::t_test2();
-    // smartptr::trait1::t_test3();
-    // smartptr::trait1::t_test4();
     // smartptr::rc1::rc_test1();
     // smartptr::rc1::rc_test2();
     // smartptr::rc1::rc_test3();
@@ -91,6 +83,7 @@ fn main() {
     // smartptr::cell1::c_t4();
     // smartptr::cell1::c_t5();
     // smartptr::cell1::c_t6();
+    // smartptr::cell1::c_t7();
     // smartptr::sync1::s_t1();
     // concurrency::thread1::t_test1();
     // concurrency::thread1::t_test2();
@@ -112,7 +105,6 @@ fn main() {
     // advanced::trait1::t_test1();
     // advanced::trait1::t_test2();
     // advanced::trait1::t_test3();
-    // advanced::trait1::t_test4();
     // advanced::type1::t_test1();
     // async1::async1::test1();
     // async1::future1::test1();
@@ -140,21 +132,34 @@ fn main() {
     // std1::map1::hashmap1();
     // std1::reflect1::r_t1();
     // std1::reflect1::r_t2();
+    // std1::reflect1::rt3();
     // std1::io1::i_t1();
     // std1::io1::i_t2();
     // std1::io1::i_t3();
     // std1::io1::i_t4();
     // std1::io1::i_t5();
     // std1::io1::i_t6();
+    // std1::io1::i_t7();
     // std1::time1::t_t1();
     // std1::fmt::f_t1();
     // std1::fmt::f_t2();
     // std1::default1::t1();
+    // std1::panic1::p_t1();
+    // std1::panic1::p_t2();
+    // std1::panic1::p_t3();
+    // std1::panic1::p_t4();
     // compution::compute::test1();
     // crate1::chrono1::c_t1();
     // crate1::serde1::test1();
     // crate1::simplelog1::t1();
+    // crate1::simplelog1::t2();
     // crate1::log1::t1();
     // crate1::log1::t2();
     // error1::err1::t1();
+    // error1::err1::t2();
+    // match  error1::err1::t3(){
+    //     Ok(s)=> { },
+    //     Err(e)=> println!("{}",e.source().unwrap()),//invalid digit found in string
+    // };
+    // derive1::d1::dt1();
 }
