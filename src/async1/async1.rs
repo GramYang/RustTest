@@ -38,6 +38,8 @@ async fn dance() {
     println!("dance");
 }
 
+//为什么这里learn_song必然在sing_song之前执行呢？
+// 因为sing_song等待的是learn_song的返回值，sing_song在得不到返回值时必然阻塞让位与learn_song
 async fn learn_and_sing(){
     let song=learn_song().await;
     sing_song(song).await;

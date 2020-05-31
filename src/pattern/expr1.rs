@@ -207,3 +207,25 @@ pub fn l_t3(){
     };
     assert_eq!(result, 13);
 }
+
+//范围表达式测试，[..]范围表达式必然返回的是数组，而且是clone的
+pub fn lt4(){
+    assert_eq!((3..5), std::ops::Range { start: 3, end: 5 });
+    let arr = [0, 1, 2, 3, 4];
+    assert_eq!(arr[ ..  ], [0,1,2,3,4]);
+    assert_eq!(arr[ .. 3], [0,1,2    ]);
+    assert_eq!(arr[ ..=3], [0,1,2,3  ]);
+    assert_eq!(arr[1..  ], [  1,2,3,4]);
+    assert_eq!(arr[1.. 3], [  1,2    ]);  // Range
+    assert_eq!(arr[1..=3], [  1,2,3  ]);
+    let v = vec![1,2,3,4,5,6];
+    assert_eq!(v[1..], [2,3,4,5,6]);//范围表达式必然返回数组
+    assert_eq!(v,&[1,2,3,4,5,6]);//没有修改
+    let v1 = vec!["a".to_string(),"b".to_string(),"c".to_string(),"d".to_string(),"e".to_string()];
+    assert_eq!(v1[1..], ["b".to_string(),"c".to_string(),"d".to_string(),"e".to_string()]);
+    assert_eq!(v1,&["a".to_string(),"b".to_string(),"c".to_string(),"d".to_string(),"e".to_string()]);
+    let v2 = vec!["a","b","c","d","e"];
+    //报错，Vec<&str>不能用范围表达式
+    // assert_eq!(v[1..], ["b","c","d","e"]);
+    // assert_eq!(v,&["a","b","c","d","e"]);
+}

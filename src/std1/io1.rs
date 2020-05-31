@@ -62,7 +62,7 @@ pub fn i_t5() ->io::Result<()>{
     Ok(())
 }
 
-//stdout
+//stdout，只能写&[u8]
 pub fn i_t6() ->io::Result<()>{
     //lock返回一个写保护，在函数结束后自动解锁
     let stdout = io::stdout();
