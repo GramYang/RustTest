@@ -1,5 +1,6 @@
 use std::{thread, time};
 use std::time::{Duration, Instant};
+use std::sync::Arc;
 
 //Thread使用
 pub fn t1(){
@@ -141,4 +142,17 @@ pub fn func1(){
     let now = time::Instant::now();
     thread::sleep(ten_millis);
     assert!(now.elapsed() >= ten_millis);
+}
+
+//测试rust中对结构体的并发读写法？测试结果和go一样，并发读不需要加锁
+pub fn demo1(){
+    let b = Arc::new(Bag{a:123,b:"abc".to_string()});
+    for _ in 1..20{
+        let b1 = Arc::clone(&b);
+        thread::spawn(move || println!("{} {}",b1.a,b1.b)).join();
+    }
+}
+
+struct Bag{
+    a:i32,b:String
 }

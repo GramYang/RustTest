@@ -198,6 +198,7 @@ pub fn c_t6(){
 //测试Rc+RefCell套基本类型和结构体, 测试RefCell套基本类型和结构体
 //Rc+RefCell和RefCell测试结果是一样的
 //Rc+RefCell的变量全部加&后写法不变
+//测试RefCell包裹容器用其&mut self方法修改容器参数的写法
 pub fn c_t7(){
     //Rc+RefCell套结构体，不能加*
     let x = Rc::new(RefCell::new(Bag{a:1,b:"a".to_string()}));
@@ -217,6 +218,10 @@ pub fn c_t7(){
     println!("{}",y.borrow().a);//2,这里是不能加*的
     y.borrow_mut().a +=1;//这里是不能加*的
     println!("{}",y.borrow().a);//3
+    let mut b = y.borrow_mut();
+    *b.op1() = "c".to_string();//修改成功
+    drop(b);//必须drop
+    println!("{:?}",y);
     //RefCell套i32
     let y1 = RefCell::new(100);
     println!("{}",*y1.borrow());//可加可不加
@@ -228,4 +233,11 @@ pub fn c_t7(){
 struct Bag{
     a:i32,
     b:String,
+}
+
+impl Bag{
+    //RefMut包裹Bag调用
+    fn op1(&mut self) ->&mut String{
+        &mut self.b
+    }
 }

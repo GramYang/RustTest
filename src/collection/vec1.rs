@@ -1,3 +1,4 @@
+use std::rc::Rc;
 
 //Vec
 pub fn vec_test1(){
@@ -50,7 +51,7 @@ pub fn vec_test1(){
     let mut vec2 = vec![4, 5, 6];
     vec.append(&mut vec2);//append修改两者
     println!("{:?} {:?}",vec,vec2);//[1, 2, 3, 4, 5, 6] []
-    //drain也是修改两者，范围参数
+    //drain也是修改两者，范围参数，这种修改两者的方法都是靠的移动指针来完成的
     let mut v = vec![1, 2, 3];
     let u: Vec<_> = v.drain(1..).collect();
     assert_eq!(v, &[1]);
@@ -514,4 +515,30 @@ pub fn v_t2(){
     let slice = ['f', 'o', 'o'];
     let mut iter = slice.windows(4);
     assert!(iter.next().is_none());
+}
+
+//Vec是实现了clone的!!!
+pub fn vt3(){
+    //基本类型
+    let v = vec![1,2,3,4];
+    let v1 = v.clone();
+    assert_eq!(v1,&[1,2,3,4]);
+    //Rc
+    let mut v2 = vec![];
+    v2.push(Rc::new(VBag::new()));
+    v2.push(Rc::new(VBag::new()));
+    v2.push(Rc::new(VBag::new()));
+    v2.push(Rc::new(VBag::new()));
+    let v3 = v2.clone();
+    println!("{}",Rc::strong_count(v3.get(0).unwrap()));//2
+}
+
+struct VBag{
+    a:String,
+}
+
+impl VBag{
+    fn new() ->Self{
+        VBag{a:"114514".to_string()}
+    }
 }

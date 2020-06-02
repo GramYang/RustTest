@@ -20,9 +20,6 @@ mod compution;
 mod crate1;
 mod error1;
 #[macro_use] extern crate log;
-
-use std::error::Error;
-
 mod derive1;
 
 fn main() {
@@ -30,6 +27,7 @@ fn main() {
     // variable::let1::let_test2();
     // variable::let1::l_t3();
     // variable::cast1::c_test1();
+    // variable::cast1::ct2();
     // function::fn1::fn_test1();
     // function::fn1::fn_test2();
     // function::fn1::fn_test3();
@@ -50,11 +48,14 @@ fn main() {
     // struct_enum::type1::t_t1();
     // collection::vec1::vec_test1();
     // collection::vec1::v_t2();
+    // collection::vec1::vt3();
     // collection::str1::str_test1();
     // collection::str1::str_test2();
     // collection::str1::s_t3();
+    // collection::str1::st4();
     // collection::box1::b_t1();
     // collection::map1::hashmap1();
+    // collection::map1::hm2();
     // collection::vecdeque1::vd1();
     // collection::vecdeque1::vd2();
     // pattern::expr1::e_test1();
@@ -72,10 +73,7 @@ fn main() {
     // iter_closure::closure::close_test3();
     // iter_closure::closure::c_t4();
     // iter_closure::closure::c_t5();
-    // iter_closure::iter::iter_test1();
-    // iter_closure::iter::iter_test2();
-    // iter_closure::iter::iter_test3()
-    // iter_closure::iter::iter_test4();
+    // iter_closure::iter::it1();
     // smartptr::rc1::rc_test1();
     // smartptr::rc1::rc_test2();
     // smartptr::rc1::rc_test3();
@@ -91,7 +89,6 @@ fn main() {
     // smartptr::sync1::arc1();
     // smartptr::sync1::arc2();
     // smartptr::sync1::arc3();
-    // smartptr::sync1::arc4();
     // smartptr::sync1::cv1();
     // smartptr::sync1::cv2();
     // smartptr::sync1::b1();
@@ -102,6 +99,7 @@ fn main() {
     // concurrency::thread1::lk1();
     // concurrency::thread1::b1();
     // concurrency::thread1::func1();
+    // concurrency::thread1::demo1();
     // concurrency::channel1::chan_test1();
     // concurrency::channel1::chan_test2();
     // concurrency::channel1::chan_test3();

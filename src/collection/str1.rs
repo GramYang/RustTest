@@ -83,7 +83,7 @@ pub fn str_test1(){
     assert!(s.is_empty());
     assert_eq!(0, s.len());
     assert_eq!(3, s.capacity());
-    //drain指定返回截取字符串返回，范围也是[0, at)、[at, len)
+    //drain指定返回截取字符串返回，范围也是[0, at)、[at, len)，drain会修改自己
     let mut s = String::from("α is alpha, β is beta");
     let beta_offset = s.find('β').unwrap_or(s.len());
     let t: String = s.drain(..beta_offset).collect();
@@ -209,7 +209,7 @@ pub fn str_test2(){
     let s = "Löwe 老虎 Léopard";
     let x: &[_] = &['1', '2'];
     assert_eq!(s.rfind(x), None);
-    //get返回子字符串&str
+    //get返回子字符串&str，get只能获取range参数而不能指定某一个下标
     let v = String::from("🗻∈🌏");
     let v1 = v.get(0..4);
     assert_eq!(Some("🗻"), v.get(0..4));
@@ -373,7 +373,7 @@ pub fn str_test2(){
     assert_eq!(v, ["leopard", "tiger", "lion"]);
     let v: Vec<&str> = "abc1defXghi".rsplit(|c| c == '1' || c == 'X').collect();
     assert_eq!(v, ["ghi", "def", "abc"]);
-    //split_at指定下标将字符串一分为二
+    //split_at指定下标将字符串一分为二，不会修改自己
     let s = "Per Martin-Löf";
     let (first, last) = s.split_at(3);
     assert_eq!("Per", first);
@@ -469,17 +469,19 @@ pub fn str_test2(){
 }
 
 //字符串遍历，在全部都是ascii的情况下，根据下标来取字符
+//Rust的字符串与字符数组并不能相互转换，因为字符可能是中文，也可能是其他的外国文字或符号
+//这也是为什么Rust的String没有提供下标遍历字符串中字符的api，因为不提倡
 pub fn s_t3(){
-    let s = String::from("1145141919810");
-    println!("{:?}",get_char(&s,5 as usize));
+    let s = String::from("我是你哥哥，我们两个都是你妈的儿子，你妈死了好吧");
+    let mut ci = s.char_indices();
+    while let Some((k,v)) = ci.next() {
+        println!("{} {}",k,v);
+    }
 }
 
-fn get_char(s:&String,i:usize)->Option<char>{
-    let mut ci = s.as_str().char_indices();
-    while let Some((k,v)) = ci.next() {
-        if i == k{
-            return Some(v);
-        }
-    }
-    None
+//比较两个字符串，看来Rust和Java不同，Rust没有一个字符串常量池
+pub fn st4(){
+    let s1 = String::from("abcddef");
+    let s2 = String::from("abcddef");
+    println!("{} {}", s1.as_str() == s2.as_str(),s1.as_ptr() == s2.as_ptr());
 }

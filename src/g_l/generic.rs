@@ -55,6 +55,7 @@ struct Point1<T,U>{
 }
 
 impl<T,U> Point1<T,U>{
+    //一般情况下方法是不需要声明泛型的，除非这些泛型是新的泛型
     fn mix<V,W>(self, other:Point1<V,W>) ->Point1<T,W>{
         Point1{
             x:self.x,

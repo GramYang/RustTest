@@ -18,3 +18,15 @@ pub fn c_test1(){
     assert_eq!(TypeId::of::<i32>()==a5.type_id(),true);
     assert_eq!(TypeId::of::<f64>()==a6.type_id(),true);
 }
+
+//测试所有基本类型在Default下的默认值
+pub fn ct2(){
+    println!("{:?}",PT::default());//PT { a: 0, b: 0, c: false, e: '\u{0}', f: 0.0 }
+}
+
+#[derive(Default,Debug)]
+struct PT{
+    a:i32,b:usize,c:bool,
+    // d:str,//这个不能有
+    e:char,f:f32
+}

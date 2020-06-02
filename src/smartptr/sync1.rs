@@ -104,30 +104,6 @@ pub fn arc3(){
     println!("{}",*counter.lock().unwrap()); //10
 }
 
-//Mutex+Arc例子2
-//测试mutex的用法和golang的区别，可以看出，mutex和golang的用法一样，在golang的mux的基础上还可以含有一个值
-pub fn arc4(){
-    let m = Arc::new(Mutex::new(0));
-    let b = Arc::new(Barrier::new(3));
-    let mut handles =vec![];
-    println!("start");
-    for i in 0..3{
-        let b1 = b.clone();
-        let m1 = m.clone();
-        let handle = thread::spawn(move||{
-            println!("mutex {} not locked",i);
-            m1.lock();
-            println!("mutex {} locked",i);
-            b1.wait();
-            println!("mutex {} unlocked",i);
-        });
-        handles.push(handle);
-    }
-    for handle in handles{
-        handle.join().unwrap();
-    }
-}
-
 //Condvar条件变量例子
 pub fn cv1(){
     let pair = Arc::new((Mutex::new(false), Condvar::new()));
@@ -281,7 +257,8 @@ pub fn o1(){
     assert_eq!(INIT2.is_completed(), false);
 }
 
-//rwlock例子
+//rwlock例子，rwlock想和Arc配合来并发修改对象值，就必须用rwlock包裹住这个对象
+//一个rwlock的例子见vecdeque1中的pool
 pub fn rw1(){
     //例子1
     let lock = RwLock::new(5);
