@@ -5,3 +5,6 @@ pub mod fmt;
 pub mod default1;
 pub mod panic1;
 pub mod borrow;
+pub mod mem;
+pub mod ptr;
+pub mod alloc;

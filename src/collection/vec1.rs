@@ -7,7 +7,7 @@ pub fn vec_test1(){
     vec.push(1);
     vec.push(2);
     assert_eq!(vec.len(), 2);
-    assert_eq!(vec[0], 1);
+    assert_eq!(vec[0], 1);//下标
     assert_eq!(vec.pop(), Some(2));
     assert_eq!(vec.len(), 1);
     vec[0] = 7;

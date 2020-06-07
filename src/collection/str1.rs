@@ -471,12 +471,18 @@ pub fn str_test2(){
 //字符串遍历，在全部都是ascii的情况下，根据下标来取字符
 //Rust的字符串与字符数组并不能相互转换，因为字符可能是中文，也可能是其他的外国文字或符号
 //这也是为什么Rust的String没有提供下标遍历字符串中字符的api，因为不提倡
+//可以在&str上使用range，也可以借助迭代器将&str转换成Bytes来遍历（前提是&str只能是简单的字符串）
 pub fn s_t3(){
     let s = String::from("我是你哥哥，我们两个都是你妈的儿子，你妈死了好吧");
     let mut ci = s.char_indices();
     while let Some((k,v)) = ci.next() {
         println!("{} {}",k,v);
     }
+    let s1 = "739475&wefasd*asd(sadsa)adsad@1723213";
+    let count = s1[..].bytes().take_while(|&b| b!=b'&').count();
+    println!("{}",count);//6，正好返回的是&的下标
+    let c = s1[..].as_bytes().get(6).unwrap();
+    assert_eq!(*c,b'&');
 }
 
 //比较两个字符串，看来Rust和Java不同，Rust没有一个字符串常量池

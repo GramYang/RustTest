@@ -105,6 +105,7 @@ fn main() {
     // concurrency::channel1::chan_test3();
     // concurrency::channel1::chan_test4();
     // advanced::unsafe1::p_test1();
+    // advanced::unsafe1::p2();
     // advanced::unsafe1::f_test1();
     // advanced::unsafe1::e_test1();
     // advanced::unsafe1::s_test1();
@@ -154,6 +155,9 @@ fn main() {
     // std1::panic1::p_t3();
     // std1::panic1::p_t4();
     // std1::borrow::bt1();
+    // std1::mem::t1();
+    // std1::ptr::p1();
+    // std1::alloc::a1();
     // compution::compute::test1();
     // crate1::chrono1::c_t1();
     // crate1::serde1::test1();

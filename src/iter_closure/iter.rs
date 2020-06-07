@@ -27,11 +27,11 @@ pub fn it1(){
     //by_ref返回一个&mut Self
     let a = [1, 2, 3];
     let iter = a.iter();
-    let sum: i32 = iter.take(5).fold(0, |acc, i| acc + i );
+    let sum: i32 = iter.take(5).fold(0, |acc, i| acc + *i );
     assert_eq!(sum, 6);
     let a = [1, 2, 3];
     let mut iter = a.iter();
-    let sum: i32 = iter.by_ref().take(2).fold(0, |acc, i| acc + i );
+    let sum: i32 = iter.by_ref().take(2).fold(0, |acc, i| acc + *i );
     assert_eq!(sum, 3);
     assert_eq!(iter.next(), Some(&3));
     assert_eq!(iter.next(), None);
@@ -56,18 +56,22 @@ pub fn it1(){
     assert_eq!(iter.next(), Some(&5));
     assert_eq!(iter.next(), Some(&6));
     assert_eq!(iter.next(), None);
-    //copied创建迭代器copy所有元素
+    //copied创建迭代器copy所有元素，只能用于可以copy的元素
     let a = [1, 2, 3];
     let v_cloned: Vec<_> = a.iter().copied().collect();
-    let v_map: Vec<_> = a.iter().map(|&x| x).collect();
+    let v_map: Vec<_> = a.iter().map(|&x| x).collect(); //其实这就是copied的原理
     assert_eq!(v_cloned, vec![1, 2, 3]);
     assert_eq!(v_map, vec![1, 2, 3]);
-    //cloned创建一个迭代器clone其所有的元素
+    //cloned创建一个迭代器clone其所有的元素，前提是其中的元素必须实现了Clone
     let a = [1, 2, 3];
     let v_cloned: Vec<_> = a.iter().cloned().collect();
-    let v_map: Vec<_> = a.iter().map(|&x| x).collect();//用map实现了cloned()
+    let v_map: Vec<_> = a.iter().map(|&x| x).collect();//其实这就是cloned的原理
     assert_eq!(v_cloned, vec![1, 2, 3]);
     assert_eq!(v_map, vec![1, 2, 3]);
+    // struct Bag{a:i32};//失败，Bag没有实现Clone
+    // let s = [Bag{a:10},Bag{a:20},Bag{a:30}];
+    // let s_c = s.iter().cloned().collect();
+    // assert_eq!(s_c, vec![Bag{a:10},Bag{a:20},Bag{a:30}]);
     //cmp
     use std::cmp::Ordering;
     assert_eq!([1].iter().cmp([1].iter()), Ordering::Equal);
@@ -200,7 +204,7 @@ pub fn it1(){
     assert_eq!(d1, [&1, &2, &3, &4, &5, &6, &7, &8]);
     //fold返回一个最终值
     let a = [1, 2, 3];
-    let sum = a.iter().fold(0, |acc, x| acc + x);
+    let sum = a.iter().fold(0, |acc, x| acc + *x);
     assert_eq!(sum, 6);
     let numbers = [1, 2, 3, 4, 5];
     let mut result = 0;
@@ -465,7 +469,7 @@ pub fn it1(){
     assert_eq!(iter.next(), Some(1));
     assert_eq!(iter.next(), Some(2));
     assert_eq!(iter.next(), None);
-    //take_while
+    //take_while不会获取所有满足条件的元素，碰到第一个不满足条件的元素时就会中断
     let a = [-1i32, 0, 1];
     let mut iter = a.iter().take_while(|x| x.is_negative());
     assert_eq!(iter.next(), Some(&-1));
@@ -484,7 +488,7 @@ pub fn it1(){
         .take_while(|n| **n != 3)
         .cloned()
         .collect();
-    assert_eq!(result, &[1, 2]);
+    assert_eq!(result, &[1, 2]);//迭代器过了3，所以下面只会返回4
     let result: Vec<i32> = iter.cloned().collect();
     assert_eq!(result, &[4]);
     //zip将两个迭代器合成一个键值对的新迭代器，这样你就可以同时遍历两个迭代器
