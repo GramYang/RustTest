@@ -74,6 +74,7 @@ fn main() {
     // iter_closure::closure::c_t4();
     // iter_closure::closure::c_t5();
     // iter_closure::iter::it1();
+    // iter_closure::iter::it2();
     // smartptr::rc1::rc_test1();
     // smartptr::rc1::rc_test2();
     // smartptr::rc1::rc_test3();
@@ -158,6 +159,7 @@ fn main() {
     // std1::mem::t1();
     // std1::ptr::p1();
     // std1::alloc::a1();
+    // std1::ops::op1();
     // compution::compute::test1();
     // crate1::chrono1::c_t1();
     // crate1::serde1::test1();

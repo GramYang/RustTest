@@ -228,4 +228,6 @@ pub fn lt4(){
     //报错，Vec<&str>不能用范围表达式
     // assert_eq!(v[1..], ["b","c","d","e"]);
     // assert_eq!(v,&["a","b","c","d","e"]);
+    let a :Vec<i32>= (0..10).map(|i| i).collect();//Range也可以用map
+    assert_eq!(a, [0,1,2,3,4,5,6,7,8,9]);
 }

@@ -520,3 +520,43 @@ pub fn it1(){
     assert_eq!(left, [1, 3]);
     assert_eq!(right, [2, 4]);
 }
+
+//IntoIterator定义for in和loop的行为测试
+pub fn it2(){
+    let mut c = MyCollection::new();
+    c.add(0);
+    c.add(1);
+    c.add(2);
+    for i in c {
+        println!("{}",i);
+    }
+    let mut c = MyCollection::new();
+    c.add(0);
+    c.add(1);
+    c.add(2);
+    for (i, n) in c.into_iter().enumerate() {
+        println!("{} {}",i as i32,n);
+    }
+}
+
+#[derive(Debug)]
+struct MyCollection(Vec<i32>);
+
+impl MyCollection {
+    fn new() -> MyCollection {
+        MyCollection(Vec::new())
+    }
+
+    fn add(&mut self, elem: i32) {
+        self.0.push(elem);
+    }
+}
+
+impl IntoIterator for MyCollection {
+    type Item = i32;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}

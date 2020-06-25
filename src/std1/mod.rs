@@ -8,3 +8,4 @@ pub mod borrow;
 pub mod mem;
 pub mod ptr;
 pub mod alloc;
+pub mod ops;
