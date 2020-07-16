@@ -95,7 +95,6 @@ pub fn t_test2(){
     //父trait
     let p=Point1{x:1,y:2};
     p.outline_print();
-
 }
 
 struct Point1{

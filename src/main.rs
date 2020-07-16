@@ -1,3 +1,4 @@
+#![feature(specialization)]
 mod variable;
 mod function;
 mod control_flow;
@@ -14,7 +15,6 @@ mod async1;
 mod macro1;
 mod quote;
 mod list;
-mod thread_pool;
 mod std1;
 mod compution;
 mod crate1;
@@ -114,6 +114,7 @@ fn main() {
     // advanced::trait1::t_test2();
     // advanced::trait1::t_test3();
     // advanced::type1::t_test1();
+    // advanced::generic1::g1();
     // async1::async1::test1();
     // async1::future1::test1();
     // macro1::mr1::test1();
@@ -135,8 +136,6 @@ fn main() {
     // list::fifth::test2();
     // list::fifth::test3();
     // list::fifth::test4();
-    // thread_pool::tp1::test1();
-    // thread_pool::tp1::test2();
     // std1::reflect1::r_t1();
     // std1::reflect1::r_t2();
     // std1::reflect1::rt3();
@@ -167,6 +166,8 @@ fn main() {
     // crate1::simplelog1::t2();
     // crate1::log1::t1();
     // crate1::log1::t2();
+    // crate1::tp1::test1();
+    // crate1::tp1::test2();
     // error1::err1::t1();
     // error1::err1::t2();
     // match  error1::err1::t3(){
