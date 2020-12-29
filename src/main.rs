@@ -21,6 +21,7 @@ mod crate1;
 mod error1;
 #[macro_use] extern crate log;
 mod derive1;
+mod regex;
 
 fn main() {
     // variable::let1::let_test1();
@@ -107,6 +108,7 @@ fn main() {
     // concurrency::channel1::chan_test4();
     // advanced::unsafe1::p_test1();
     // advanced::unsafe1::p2();
+    // advanced::unsafe1::p3();
     // advanced::unsafe1::f_test1();
     // advanced::unsafe1::e_test1();
     // advanced::unsafe1::s_test1();
@@ -175,4 +177,5 @@ fn main() {
     //     Err(e)=> println!("{}",e.source().unwrap()),//invalid digit found in string
     // };
     // derive1::d1::dt1();
+    regex::reg1::rt1();
 }

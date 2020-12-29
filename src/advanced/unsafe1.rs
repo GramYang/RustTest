@@ -1,4 +1,8 @@
 use std::ops::Add;
+use std::ptr::NonNull;
+use std::cell::Cell;
+use serde::export::PhantomData;
+use std::rc::Rc;
 
 //裸指针
 pub fn p_test1(){
@@ -143,6 +147,46 @@ pub fn p2(){
         }
         ptr = ptr.wrapping_sub(step);
     }
+}
+
+struct Gc<T>{
+    ptr_root:Cell<NonNull<GcBox<T>>>,
+    marker:PhantomData<Rc<T>>,
+}
+
+struct GcBoxHeader<T>{
+    roots:Cell<usize>,
+    next:Option<NonNull<GcBox<T>>>,
+    marked:Cell<bool>,
+}
+
+struct GcBox<T>{
+    header:GcBoxHeader<T>,
+    data:T,
+}
+
+//这是rust-gc里面一个奇怪的指针值操作，测试一下
+//测试结果，其将指针值的尾数加1，这样做有什么意义呢？？
+pub fn p3(){
+    unsafe{
+        let ptr=unsafe{NonNull::new_unchecked(Box::into_raw(Box::new(GcBox{
+            header:GcBoxHeader{
+                roots:Cell::new(1),
+                marked:Cell::new(false),
+                next:None,
+            },
+            data:100
+        })))};
+        let gc=Gc{
+            ptr_root:Cell::new(NonNull::new_unchecked(ptr.as_ptr())),
+            marker:PhantomData,
+        };
+        let mut ptr1=gc.ptr_root.get().as_ptr();
+        println!("{:p}",ptr1);//0xe8f120
+        *(&mut ptr1 as *mut *mut GcBox<i32> as *mut usize)|=1;
+        println!("{:p}",ptr1);//0xe8f120
+    }
+
 }
 
 //unsafe的函数和方法
