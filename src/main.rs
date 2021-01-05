@@ -55,10 +55,15 @@ fn main() {
     // collection::str1::s_t3();
     // collection::str1::st4();
     // collection::box1::b_t1();
-    // collection::map1::hashmap1();
-    // collection::map1::hm2();
+    // collection::hashmap1::hashmap1();
+    // collection::hashmap1::hm2();
     // collection::vecdeque1::vd1();
     // collection::vecdeque1::vd2();
+    // collection::linkedlist1::llt1();
+    // collection::btreemap1::btm1();
+    // collection::hashset1::hs1();
+    // collection::btreeset1::bts1();
+    // collection::binaryheap1::bh1();
     // pattern::expr1::e_test1();
     // pattern::expr1::e_test2();
     // pattern::expr1::l_t3();
@@ -177,5 +182,5 @@ fn main() {
     //     Err(e)=> println!("{}",e.source().unwrap()),//invalid digit found in string
     // };
     // derive1::d1::dt1();
-    regex::reg1::rt1();
+    // regex::reg1::rt1();
 }

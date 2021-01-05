@@ -16,7 +16,7 @@ struct Node<T> {
 }
 
 impl<T> List<T> {
-    //tail初始化为可变空指针
+    //tail初始化为可变空指针ptr::null_mut()
     pub fn new() -> Self {
         List { head: None, tail: ptr::null_mut() }
     }
@@ -27,9 +27,11 @@ impl<T> List<T> {
             elem,
             next: None,
         });
+        //这里必须这么写，raw_tail才能是可变裸指针，也不能使用Box::into_raw()，会消耗掉new_tail
         let raw_tail: *mut _ = &mut *new_tail;
         if !self.tail.is_null() {
             unsafe {
+                //tail是可变裸指针，根据裸指针获取指向值的域
                 (*self.tail).next = Some(new_tail);
             }
         } else {

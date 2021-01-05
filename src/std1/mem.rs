@@ -1,4 +1,4 @@
-use std::mem;
+use std::mem::{self,ManuallyDrop};
 use std::fs::File;
 
 //mem包函数测试
@@ -31,7 +31,8 @@ pub fn t1(){
     drop(x); // a copy of `x` is moved and dropped
     drop(y); // a copy of `y` is moved and dropped
     println!("x: {}, y: {}", x, y.0); // still available
-    //forget手动制造内存泄漏
+    //forget手动制造内存泄漏，file不会被关闭。那么这是干什么用的呢？
+    // 这是用于你将资源传递到rust代码之外，比如将文件描述符传递给C代码。
     let file = File::open("asset/foo.txt").unwrap();
     mem::forget(file);
     //replace将参数2移动到参数1，返回参数1的旧值
@@ -167,6 +168,16 @@ pub fn t1(){
     //zeroed返回该类型的所有字节都是0的值
     let x: i32 = unsafe { mem::zeroed() };
     assert_eq!(0, x);
+    //ManuallyDrop会禁止编译器调用v的析构函数
+    let v = vec![65, 122];
+    let mut v = ManuallyDrop::new(v);
+    let (ptr, len, cap) = (v.as_mut_ptr(), v.len(), v.capacity());
+    let s = unsafe { String::from_raw_parts(ptr, len, cap) };
+    assert_eq!(s, "Az");
+    println!("{:?}",v);//ManuallyDrop { value: [65, 122] }
+    let mut v = vec![65, 122];
+    let s = unsafe { String::from_raw_parts(v.as_mut_ptr(), v.len(), v.capacity()) };
+    // println!("{:?} {:?}",s,v);//虽然能打印出来，但是会报错
 }
 
 #[derive(Default)]

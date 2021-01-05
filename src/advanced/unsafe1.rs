@@ -9,6 +9,9 @@ pub fn p_test1(){
     let mut num=5;
     let r1 = &num as *const i32;
     let r2 = &mut num as *mut i32;//这里跳出了可变引用和不可变引用不能同时存在的限制
+    let r21:*mut _=&mut num;//把可变裸指针的定义放到左边也行
+    //另一种获取可变裸指针的方法，但是其指针和r21以及其他的指针都不同，说明被分配到了堆上。
+    let r22=Box::into_raw(Box::new(num));
     let r3 = unsafe{&*r2};
     let r4 = unsafe {&*r1};
     let r5 = unsafe{*r1};//这里move了，由于是基本类型所以是copy
@@ -23,8 +26,10 @@ pub fn p_test1(){
     let b4 = unsafe{&*b3};
     // let b5 = unsafe{*b1};//这里move了，因为不是基本类型，所以报错
     unsafe{
-        println!("{:p} {:p} {:p} {:p} {:p}",r1,r2,r3,r4,&r5); //0xcffaac 0xcffaac 0xcffaac 0xcffaac 0xcffad4
-        println!("{:p} {:p} {:p} {:p}", b1,b2,b3,b4);//0xd0fa04 0xd0fa04 0xd0fa04 0xd0fa04
+        println!("{:p} {:p} {:p} {:p} {:p} {:p} {:p}",r1,r2,r21,r22,r3,r4,&r5);
+        //0xcffaac 0xcffaac 0xcffaac 0x1324760 0xcffaac 0xcffaac 0xcffad4
+        println!("{:p} {:p} {:p} {:p}", b1,b2,b3,b4);
+        //0xd0fa04 0xd0fa04 0xd0fa04 0xd0fa04
     }
     let mut a = Box::new(num);
     let raw = &mut *a; //这种写法不用as
@@ -33,6 +38,9 @@ pub fn p_test1(){
     println!("{:p}",raw_into);//0xea7c10，看来Box是把num整体放到了堆上面
     let a = [1, 2, 3];
     println!("{:p} {:p} {:p}",a.as_ptr(),&a as *const [i32],&a as *const [i32] as *const i32);//三者相等
+    //ptr::null_mut()原理测试
+    let a=std::ptr::null_mut::<i32>();
+    println!("{:p}",a);//0x0，这是一个空指针，所以*a会报错
 }
 
 //裸指针操作测试
