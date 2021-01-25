@@ -53,7 +53,6 @@ pub fn flow_test1() {
     }
     //for + if遍历Vec<String>
     let names=vec!["Bob".to_string(),"Frank".to_string(),"Ferris".to_string()];
-    let names=vec!["Bob".to_string(),"Frank".to_string(),"Ferris".to_string()];
     for name in  names.iter(){
         if name.as_str() == "Bob"{
             println!("find Bob");

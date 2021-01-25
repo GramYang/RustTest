@@ -50,11 +50,13 @@ fn main() {
     // collection::vec1::vec_test1();
     // collection::vec1::v_t2();
     // collection::vec1::vt3();
+    // collection::vec1::vt4();
     // collection::str1::str_test1();
     // collection::str1::str_test2();
     // collection::str1::s_t3();
     // collection::str1::st4();
     // collection::box1::b_t1();
+    // collection::box1::bt2();
     // collection::hashmap1::hashmap1();
     // collection::hashmap1::hm2();
     // collection::vecdeque1::vd1();
@@ -62,8 +64,10 @@ fn main() {
     // collection::linkedlist1::llt1();
     // collection::btreemap1::btm1();
     // collection::hashset1::hs1();
+    // collection::hashset1::hs2();
     // collection::btreeset1::bts1();
     // collection::binaryheap1::bh1();
+    // collection::tuple1::tp1();
     // pattern::expr1::e_test1();
     // pattern::expr1::e_test2();
     // pattern::expr1::l_t3();
@@ -120,6 +124,8 @@ fn main() {
     // advanced::trait1::t_test1();
     // advanced::trait1::t_test2();
     // advanced::trait1::t_test3();
+    // advanced::trait1::tt4();
+    // advanced::trait1::tt5();
     // advanced::type1::t_test1();
     // advanced::generic1::g1();
     // async1::async1::test1();

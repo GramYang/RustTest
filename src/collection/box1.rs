@@ -44,3 +44,18 @@ pub fn b_t1(){
         dealloc(p as *mut u8, Layout::new::<String>());
     }
 }
+
+//释放Box指向的堆内存
+pub fn bt2(){
+    let x=Box::new(100);
+    let p=Box::into_raw(x);
+    op2(p);
+    println!("{:p}",p);//0x11dbc10
+    println!("{:?}",unsafe{*p})//100，虽然这里已经打印出了100，但是该指针的值已经不在堆里面了
+}
+
+fn op2(p:*mut i32){
+    unsafe{
+        let _=Box::from_raw(p);
+    }
+}

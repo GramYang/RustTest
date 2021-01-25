@@ -7,6 +7,7 @@ use std::rc::Rc;
 //裸指针
 pub fn p_test1(){
     let mut num=5;
+    //下面这种将引用直接转换为裸指针的方法，不仅可以用as实现，也可以用函数参数类型自动实现
     let r1 = &num as *const i32;
     let r2 = &mut num as *mut i32;//这里跳出了可变引用和不可变引用不能同时存在的限制
     let r21:*mut _=&mut num;//把可变裸指针的定义放到左边也行

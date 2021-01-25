@@ -8,3 +8,4 @@ pub mod btreemap1;
 pub mod hashset1;
 pub mod btreeset1;
 pub mod binaryheap1;
+pub mod tuple1;

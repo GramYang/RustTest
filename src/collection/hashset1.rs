@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use futures::TryFutureExt;
 
 //HashSet基本使用
 pub fn hs1(){
@@ -64,4 +65,18 @@ pub fn hs1(){
     println!("{}",s16.is_superset(&s15));//false
     s16.insert(2);
     println!("{}",s16.is_superset(&s15));//true
+}
+
+pub fn hs2(){
+    //|操作
+    let mut s1=HashSet::new();
+    let mut s2=HashSet::new();
+    for i in 1..5{
+        s1.insert(i);
+    }
+    for i in 6..10{
+        s2.insert(i);
+    }
+    let s3=&s1|&s2;//实现了BitOr，其中强制要求使用引用来比较
+    println!("{:?}",s3);//{9, 3, 8, 6, 4, 1, 2, 7}，每次输出的顺序都不一样
 }

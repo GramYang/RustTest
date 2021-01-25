@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use futures::core_reexport::fmt::Display;
 
 //Vec
 pub fn vec_test1(){
@@ -541,4 +542,73 @@ impl VBag{
     fn new() ->Self{
         VBag{a:"114514".to_string()}
     }
+}
+
+trait BigBag:Display{
+    fn bb(&self);
+}
+
+impl BigBag for i32{
+    fn bb(&self){
+    }
+}
+
+impl BigBag for String{
+    fn bb(&self){
+    }
+}
+
+impl BigBag for bool{
+    fn bb(&self){
+    }
+}
+
+trait Animal {
+    fn make_sound(&self) -> String;
+}
+
+struct Cat;
+impl Animal for Cat {
+    fn make_sound(&self) -> String {
+        "meow".to_string()
+    }
+}
+
+struct Dog;
+impl Animal for Dog {
+    fn make_sound(&self) -> String {
+        "woof".to_string()
+    }
+}
+
+//vec作为函数参数以及vec中存放dyn类型的测试
+pub fn vt4(){
+    let mut arr:Vec<Box<dyn BigBag>>=Vec::new();
+    arr.push(Box::new(100));
+    arr.push(Box::new(String::from("abcd")));
+    arr.push(Box::new(true));
+    op_vec1(&mut arr);
+    for x in arr.iter(){
+        print!("{}",x);
+    }//100abcdtruefalse
+    println!();
+    let dog: Dog = Dog;
+    let cat: Cat = Cat;
+    let mut arr1: Vec<Box<dyn Animal>> = Vec::new();
+    arr1.push(Box::new(cat));
+    arr1.push(Box::new(dog));
+    op_vec2(&mut arr1);
+    for animal in arr1.iter() {
+        print!("{}", animal.make_sound());
+    }//meowwoofmeow
+}
+
+fn op_vec1(v:&mut Vec<Box<dyn BigBag>>){
+    let t:bool=false;
+    v.push(Box::new(t));
+}
+
+fn op_vec2(v:&mut Vec<Box<dyn Animal>>){
+    let t:Cat=Cat;
+    v.push(Box::new(t));
 }
