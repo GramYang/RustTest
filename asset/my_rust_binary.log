@@ -1,0 +1,3 @@
+09:41:29 [ERROR] Bright red error
+09:41:29 [ INFO] This only appears in the log file 123 321
+09:41:29 [DEBUG] (1) RustTest::crate1::simplelog1: This level is currently not enabled for any logger
